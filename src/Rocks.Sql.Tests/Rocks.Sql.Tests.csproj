@@ -60,11 +60,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CommonTest\OrderedHybridCollectionTests.cs" />
-    <Compile Include="ExtensionsTests\InitializersTests.cs" />
+    <Compile Include="SqlBuilderTests\FactoriesTests.cs" />
     <Compile Include="SqlClauseTests\AddClauseTests.cs" />
     <Compile Include="SqlClauseTests\AddWithParameterTests.cs" />
     <Compile Include="SqlClauseTests\ContainsTests.cs" />
     <Compile Include="SqlClauseTests\ParametersTests.cs" />
+    <Compile Include="SqlBuilderTests\UseCasesTests.cs" />
     <Compile Include="TestHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlClauseTests\ExpressionsTests.cs" />

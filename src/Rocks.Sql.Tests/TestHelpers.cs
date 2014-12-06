@@ -22,7 +22,7 @@ namespace Rocks.Sql.Tests
 			var subject = NormalizeSql (assertions.Subject);
 			var expected = NormalizeSql (expectedSqlEquivalent);
 
-			return subject.Should ().Be (expected);
+			return subject.Should ().Be (expected, reason, reasonArgs);
 		}
 
 		#endregion
@@ -31,7 +31,12 @@ namespace Rocks.Sql.Tests
 
 		private static string NormalizeSql (string subject)
 		{
-			NormalizeSpacesRegex.Replace (subject, " ");
+			if (!string.IsNullOrEmpty (subject))
+			{
+				subject = NormalizeSpacesRegex.Replace (subject, " ");
+				subject = subject.Trim ();
+			}
+
 			return subject;
 		}
 
