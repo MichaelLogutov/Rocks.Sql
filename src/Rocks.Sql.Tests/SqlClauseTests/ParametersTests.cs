@@ -34,7 +34,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// act
-			Action action = () => sut.AddParameter (parameter);
+			Action action = () => sut.Add (parameter);
 
 
 			// arrange
@@ -50,7 +50,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var sut = new SqlClause ();
 
 			var parameter = new SqlParameter { ParameterName = "@test" };
-			sut.AddParameter (parameter);
+			sut.Add (parameter);
 
 
 			// act
@@ -85,7 +85,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var sut = new SqlClause ();
 
 			var parameter = new SqlParameter { ParameterName = "@test" };
-			sut.AddParameter (parameter);
+			sut.Add (parameter);
 
 
 			// act

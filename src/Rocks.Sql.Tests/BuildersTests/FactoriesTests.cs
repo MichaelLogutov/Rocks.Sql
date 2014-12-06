@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Rocks.Sql.Tests.SqlBuilderTests
+namespace Rocks.Sql.Tests.BuildersTests
 {
 	[TestClass]
 	public class FactoriesTests
@@ -14,9 +14,9 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.Select ()
-			                       .AddExpression ("Id")
-			                       .AddExpression ("Name")
+			var result = SqlClauseBuilder.Select ()
+			                       .Add ("Id")
+			                       .Add ("Name")
 			                       .GetSql ();
 
 
@@ -34,7 +34,7 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.Select ("Id", "Name")
+			var result = SqlClauseBuilder.Select ("Id", "Name")
 			                       .GetSql ();
 
 
@@ -52,8 +52,8 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.From ("TableA")
-			                       .AddExpression ("inner join TableB")
+			var result = SqlClauseBuilder.From ("TableA")
+			                       .Add ("inner join TableB")
 			                       .GetSql ();
 
 
@@ -71,9 +71,9 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.Where ()
-			                       .AddExpression ("a = 1")
-			                       .AddExpression ("b = 1")
+			var result = SqlClauseBuilder.Where ()
+			                       .Add ("a = 1")
+			                       .Add ("b = 1")
 			                       .GetSql ();
 
 
@@ -91,9 +91,9 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.Where ("or")
-			                       .AddExpression ("a = 1")
-			                       .AddExpression ("b = 1")
+			var result = SqlClauseBuilder.Where ("or")
+			                       .Add ("a = 1")
+			                       .Add ("b = 1")
 			                       .GetSql ();
 
 
@@ -111,9 +111,9 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.GroupBy ()
-			                       .AddExpression ("a")
-			                       .AddExpression ("b")
+			var result = SqlClauseBuilder.GroupBy ()
+			                       .Add ("a")
+			                       .Add ("b")
 			                       .GetSql ();
 
 
@@ -131,7 +131,7 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.GroupBy ("a", "b")
+			var result = SqlClauseBuilder.GroupBy ("a", "b")
 			                       .GetSql ();
 
 
@@ -149,9 +149,9 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.Having ()
-			                       .AddExpression ("a = 1")
-			                       .AddExpression ("b = 1")
+			var result = SqlClauseBuilder.Having ()
+			                       .Add ("a = 1")
+			                       .Add ("b = 1")
 			                       .GetSql ();
 
 
@@ -169,9 +169,9 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.Having ("or")
-			                       .AddExpression ("a = 1")
-			                       .AddExpression ("b = 1")
+			var result = SqlClauseBuilder.Having ("or")
+			                       .Add ("a = 1")
+			                       .Add ("b = 1")
 			                       .GetSql ();
 
 
@@ -189,9 +189,9 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.OrderBy ()
-			                       .AddExpression ("a")
-			                       .AddExpression ("b")
+			var result = SqlClauseBuilder.OrderBy ()
+			                       .Add ("a")
+			                       .Add ("b")
 			                       .GetSql ();
 
 
@@ -209,7 +209,7 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.OrderBy ("a", "b")
+			var result = SqlClauseBuilder.OrderBy ("a", "b")
 			                       .GetSql ();
 
 
@@ -227,8 +227,8 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.CTE ("X")
-			                       .AddExpression ("select * from Table")
+			var result = SqlClauseBuilder.CTE ("X")
+			                       .Add ("select * from Table")
 			                       .GetSql ();
 
 
@@ -246,9 +246,9 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.Delete ("Table")
-			                       .AddExpression ("a")
-			                       .AddExpression ("b")
+			var result = SqlClauseBuilder.Delete ("Table")
+			                       .Add ("a")
+			                       .Add ("b")
 			                       .GetSql ();
 
 
@@ -266,7 +266,7 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.Delete ("Table")
+			var result = SqlClauseBuilder.Delete ("Table")
 			                       .GetSql ();
 
 
@@ -283,9 +283,9 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.Update ("Table")
-			                       .AddExpression ("A = 1")
-			                       .AddExpression ("B = 2")
+			var result = SqlClauseBuilder.Update ("Table")
+			                       .Add ("A = 1")
+			                       .Add ("B = 2")
 			                       .GetSql ();
 
 
@@ -304,7 +304,7 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.Insert ("Table")
+			var result = SqlClauseBuilder.Insert ("Table")
 			                       .GetSql ();
 
 
@@ -321,7 +321,7 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.Insert ("Table", "Id", "Name")
+			var result = SqlClauseBuilder.Insert ("Table", "Id", "Name")
 			                       .GetSql ();
 
 
@@ -342,9 +342,9 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.InsertColumns ()
-			                       .AddExpression ("Id")
-			                       .AddExpression ("Name")
+			var result = SqlClauseBuilder.InsertColumns ()
+			                       .Add ("Id")
+			                       .Add ("Name")
 			                       .GetSql ();
 
 
@@ -363,9 +363,9 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 
 			// act
-			var result = SqlBuilder.Values ()
-			                       .AddExpression ("Id")
-			                       .AddExpression ("Name")
+			var result = SqlClauseBuilder.Values ()
+			                       .Add ("Id")
+			                       .Add ("Name")
 			                       .GetSql ();
 
 

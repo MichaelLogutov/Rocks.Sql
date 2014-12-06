@@ -29,7 +29,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			// arrange
 			var sut = new SqlClause ();
 
-			sut.AddExpression ("a");
+			sut.Add ("a");
 
 
 			// act
@@ -47,7 +47,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			// arrange
 			var sut = new SqlClause ();
 
-			sut.AddExpression ("key", "a");
+			sut.Add ("key", "a");
 
 
 			// act

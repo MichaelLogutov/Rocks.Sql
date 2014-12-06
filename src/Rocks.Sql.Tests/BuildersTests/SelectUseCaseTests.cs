@@ -4,10 +4,10 @@ using System.Data.SqlClient;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Rocks.Sql.Tests.SqlBuilderTests
+namespace Rocks.Sql.Tests.BuildersTests
 {
 	[TestClass]
-	public class UseCasesTests
+	public class SelectUseCaseTests
 	{
 		#region Public methods
 
@@ -88,48 +88,46 @@ namespace Rocks.Sql.Tests.SqlBuilderTests
 
 		private static SqlClause CreateSql (Filter filter)
 		{
-			var select = SqlBuilder.Select ("top(@top) o.Id", "o.Date");
-			var from = SqlBuilder.From ("Orders as o");
-			var where = SqlBuilder.Where ();
-			var order = SqlBuilder.OrderBy ("o.Date");
+			var sql = SqlBuilder.Select ("top(@top) o.Id", "o.Date")
+			                    .From ("Orders as o");
 
 			if (filter.MaxRecords != null)
 			{
-				@select.AddParameter (new SqlParameter
-				                      {
-					                      ParameterName = "@top",
-					                      SqlDbType = SqlDbType.Int,
-					                      Value = filter.MaxRecords
-				                      });
+				sql.Select.Add (new SqlParameter
+				                {
+					                ParameterName = "@top",
+					                SqlDbType = SqlDbType.Int,
+					                Value = filter.MaxRecords
+				                });
 			}
 
 			if (!string.IsNullOrEmpty (filter.UserName))
 			{
-				@from.AddExpression ("u", "inner join Users as u on (o.UserId = u.Id)");
-				@where.AddExpression ("u.Name = @userName",
-				                      new SqlParameter
-				                      {
-					                      ParameterName = "@userName",
-					                      SqlDbType = SqlDbType.VarChar,
-					                      Value = filter.UserName
-				                      });
+				sql.From.Add ("u", "inner join Users as u on (o.UserId = u.Id)");
+				sql.Where.Add ("u.Name = @userName",
+				               new SqlParameter
+				               {
+					               ParameterName = "@userName",
+					               SqlDbType = SqlDbType.VarChar,
+					               Value = filter.UserName
+				               });
 			}
 
 			if (!string.IsNullOrEmpty (filter.UserEmail))
 			{
-				@from.AddExpression ("u", "inner join Users as u on (o.UserId = u.Id)");
-				@where.AddExpression ("u.Email = @userEmail",
-				                      new SqlParameter
-				                      {
-					                      ParameterName = "@userEmail",
-					                      SqlDbType = SqlDbType.VarChar,
-					                      Value = filter.UserEmail
-				                      });
+				sql.From.Add ("u", "inner join Users as u on (o.UserId = u.Id)");
+				sql.Where.Add ("u.Email = @userEmail",
+				               new SqlParameter
+				               {
+					               ParameterName = "@userEmail",
+					               SqlDbType = SqlDbType.VarChar,
+					               Value = filter.UserEmail
+				               });
 			}
 
-			var result = SqlBuilder.Statement (@select, @from, @where, order);
+			sql.OrderBy.Add ("o.Date");
 
-			return result;
+			return sql.Build ();
 		}
 
 		#endregion

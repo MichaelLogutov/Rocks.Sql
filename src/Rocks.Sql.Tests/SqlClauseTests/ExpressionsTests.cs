@@ -70,8 +70,8 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			// arrange
 			var sut = new SqlClause ();
 
-			sut.AddExpression ("a");
-			sut.AddExpression ("b");
+			sut.Add ("a");
+			sut.Add ("b");
 
 
 			// act
@@ -90,8 +90,8 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var sut = new SqlClause ();
 
 			sut.Prefix = "prefix ";
-			sut.AddExpression ("a");
-			sut.AddExpression ("b");
+			sut.Add ("a");
+			sut.Add ("b");
 
 
 			// act
@@ -110,8 +110,8 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var sut = new SqlClause ();
 
 			sut.Suffix = " suffix";
-			sut.AddExpression ("a");
-			sut.AddExpression ("b");
+			sut.Add ("a");
+			sut.Add ("b");
 
 
 			// act
@@ -130,8 +130,8 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var sut = new SqlClause ();
 
 			sut.Separator = " and ";
-			sut.AddExpression ("a");
-			sut.AddExpression ("b");
+			sut.Add ("a");
+			sut.Add ("b");
 
 
 			// act
@@ -152,8 +152,8 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			sut.Prefix = "prefix ";
 			sut.Separator = " and ";
 			sut.Suffix = " suffix";
-			sut.AddExpression ("a");
-			sut.AddExpression ("b");
+			sut.Add ("a");
+			sut.Add ("b");
 
 
 			// act
@@ -174,8 +174,8 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			sut.Prefix = "prefix ";
 			sut.Separator = " and ";
 			sut.Suffix = " suffix";
-			sut.AddExpression ("a");
-			sut.AddExpression ("b");
+			sut.Add ("a");
+			sut.Add ("b");
 
 
 			// act
@@ -193,7 +193,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			// arrange
 			var sut = new SqlClause ();
 
-			sut.AddExpression ("key", "a");
+			sut.Add ("key", "a");
 
 
 			// act
@@ -211,11 +211,11 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			// arrange
 			var sut = new SqlClause ();
 
-			sut.AddExpression ("key", "a");
+			sut.Add ("key", "a");
 
 
 			// act
-			sut.AddExpression ("key", "b");
+			sut.Add ("key", "b");
 			var result = sut.GetSql ();
 
 
@@ -230,11 +230,11 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			// arrange
 			var sut = new SqlClause ();
 
-			sut.AddExpression ("key", "a");
+			sut.Add ("key", "a");
 
 
 			// act
-			sut.AddExpression ("key", "b", overwrite: true);
+			sut.Add ("key", "b", overwrite: true);
 			var result = sut.GetSql ();
 
 

@@ -18,7 +18,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// act
-			sut.AddClause (clause);
+			sut.Add (clause);
 			var result = sut.GetSql ();
 
 
@@ -34,11 +34,11 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var sut = new SqlClause ();
 
 			var clause = new SqlClause ();
-			clause.AddExpression ("a");
+			clause.Add ("a");
 
 
 			// act
-			sut.AddClause (clause);
+			sut.Add (clause);
 			var result = sut.GetSql ();
 
 
@@ -52,14 +52,14 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		{
 			// arrange
 			var sut = new SqlClause ();
-			sut.AddExpression ("a");
+			sut.Add ("a");
 
 			var clause = new SqlClause ();
-			clause.AddExpression ("b");
+			clause.Add ("b");
 
 
 			// act
-			sut.AddClause (clause);
+			sut.Add (clause);
 			var result = sut.GetSql ();
 
 
@@ -73,14 +73,14 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		{
 			// arrange
 			var sut = new SqlClause ();
-			sut.AddExpression ("key", "a");
+			sut.Add ("key", "a");
 
 			var clause = new SqlClause ();
-			clause.AddExpression ("b");
+			clause.Add ("b");
 
 
 			// act
-			sut.AddClause ("key", clause);
+			sut.Add ("key", clause);
 			var result = sut.GetSql ();
 
 
@@ -94,14 +94,14 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		{
 			// arrange
 			var sut = new SqlClause ();
-			sut.AddExpression ("key", "a");
+			sut.Add ("key", "a");
 
 			var clause = new SqlClause ();
-			clause.AddExpression ("b");
+			clause.Add ("b");
 
 
 			// act
-			sut.AddClause ("key", clause, overwrite: true);
+			sut.Add ("key", clause, overwrite: true);
 			var result = sut.GetSql ();
 
 
@@ -120,7 +120,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// act
-			sut.AddClause (clause);
+			sut.Add (clause);
 			var result = sut.GetParameters ();
 
 
@@ -139,11 +139,11 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var parameter = new SqlParameter { ParameterName = "@name" };
 
 			var clause = new SqlClause ();
-			clause.AddParameter (parameter);
+			clause.Add (parameter);
 
 
 			// act
-			sut.AddClause (clause);
+			sut.Add (clause);
 			var result = sut.GetParameters ();
 
 
@@ -162,14 +162,14 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var parameter = new SqlParameter { ParameterName = "@name" };
 			var parameter2 = new SqlParameter { ParameterName = "@name2" };
 
-			sut.AddParameter (parameter);
+			sut.Add (parameter);
 
 			var clause = new SqlClause ();
-			clause.AddParameter (parameter2);
+			clause.Add (parameter2);
 
 
 			// act
-			sut.AddClause (clause);
+			sut.Add (clause);
 			var result = sut.GetParameters ();
 
 
@@ -188,14 +188,14 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var parameter = new SqlParameter { ParameterName = "@name" };
 			var parameter2 = new SqlParameter { ParameterName = "@name" };
 
-			sut.AddParameter (parameter);
+			sut.Add (parameter);
 
 			var clause = new SqlClause ();
-			clause.AddParameter (parameter2);
+			clause.Add (parameter2);
 
 
 			// act
-			sut.AddClause (clause);
+			sut.Add (clause);
 			var result = sut.GetParameters ();
 
 

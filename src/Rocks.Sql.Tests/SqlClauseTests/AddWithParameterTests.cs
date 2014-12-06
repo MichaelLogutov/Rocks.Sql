@@ -18,7 +18,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// act
-			sut.AddExpression ("a", parameter);
+			sut.Add ("a", parameter);
 
 			var result = sut.GetSql ();
 
@@ -38,7 +38,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// act
-			sut.AddExpression ("a", parameter);
+			sut.Add ("a", parameter);
 
 			var result = sut.GetParameters ();
 
@@ -54,13 +54,13 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			// arrange
 			var sut = new SqlClause ();
 
-			sut.AddExpression ("key", "a");
+			sut.Add ("key", "a");
 
 			var parameter = new SqlParameter { ParameterName = "@test" };
 
 
 			// act
-			sut.AddExpression ("key", "b", parameter);
+			sut.Add ("key", "b", parameter);
 
 			var result = sut.GetSql ();
 
@@ -76,13 +76,13 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			// arrange
 			var sut = new SqlClause ();
 
-			sut.AddExpression ("key", "a");
+			sut.Add ("key", "a");
 
 			var parameter = new SqlParameter { ParameterName = "@test" };
 
 
 			// act
-			sut.AddExpression ("key", "b", parameter);
+			sut.Add ("key", "b", parameter);
 
 			var result = sut.GetParameters ();
 
@@ -98,13 +98,13 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			// arrange
 			var sut = new SqlClause ();
 
-			sut.AddExpression ("key", "a");
+			sut.Add ("key", "a");
 
 			var parameter = new SqlParameter { ParameterName = "@test" };
 
 
 			// act
-			sut.AddExpression ("key", "b", parameter, overwrite: true);
+			sut.Add ("key", "b", parameter, overwrite: true);
 
 			var result = sut.GetSql ();
 
@@ -120,13 +120,13 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			// arrange
 			var sut = new SqlClause ();
 
-			sut.AddExpression ("key", "a");
+			sut.Add ("key", "a");
 
 			var parameter = new SqlParameter { ParameterName = "@test" };
 
 
 			// act
-			sut.AddExpression ("key", "b", parameter, overwrite: true);
+			sut.Add ("key", "b", parameter, overwrite: true);
 
 			var result = sut.GetParameters ();
 
@@ -143,14 +143,14 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var sut = new SqlClause ();
 
 			var parameter = new SqlParameter { ParameterName = "@test" };
-			sut.AddExpression ("key", "a");
-			sut.AddParameter (parameter);
+			sut.Add ("key", "a");
+			sut.Add (parameter);
 
 			var parameter2 = new SqlParameter { ParameterName = "@test2" };
 
 
 			// act
-			sut.AddExpression ("key", "b", parameter2, overwrite: true);
+			sut.Add ("key", "b", parameter2, overwrite: true);
 
 			var result = sut.GetParameters ();
 

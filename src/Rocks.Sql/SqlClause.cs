@@ -95,7 +95,7 @@ namespace Rocks.Sql
 		/// </summary>
 		/// <returns>Current instance (for chain calls).</returns>
 		[NotNull]
-		public SqlClause AddParameter ([NotNull] IDbDataParameter parameter)
+		public SqlClause Add ([NotNull] IDbDataParameter parameter)
 		{
 			if (parameter == null)
 				throw new ArgumentNullException ("parameter");
@@ -115,7 +115,7 @@ namespace Rocks.Sql
 		/// </summary>
 		/// <returns>Current instance (for chain calls).</returns>
 		[NotNull]
-		public SqlClause AddExpression ([CanBeNull] string sql)
+		public SqlClause Add ([CanBeNull] string sql)
 		{
 			if (!string.IsNullOrEmpty (sql))
 				this.expressions.AddSequenced (sql);
@@ -137,7 +137,7 @@ namespace Rocks.Sql
 		/// </summary>
 		/// <returns>Current instance (for chain calls).</returns>
 		[NotNull]
-		public SqlClause AddExpression ([NotNull] string key, [CanBeNull] string sql, bool overwrite = false)
+		public SqlClause Add ([NotNull] string key, [CanBeNull] string sql, bool overwrite = false)
 		{
 			if (!string.IsNullOrEmpty (sql))
 				this.expressions.AddKeyed (key, sql, overwrite);
@@ -152,13 +152,13 @@ namespace Rocks.Sql
 		/// </summary>
 		/// <returns>Current instance (for chain calls).</returns>
 		[NotNull]
-		public SqlClause AddExpression ([CanBeNull] string sql, [NotNull] IDbDataParameter parameter)
+		public SqlClause Add ([CanBeNull] string sql, [NotNull] IDbDataParameter parameter)
 		{
 			if (string.IsNullOrEmpty (sql))
 				return this;
 
 			this.expressions.AddSequenced (sql);
-			this.AddParameter (parameter);
+			this.Add (parameter);
 
 			return this;
 		}
@@ -177,7 +177,7 @@ namespace Rocks.Sql
 		/// </summary>
 		/// <returns>Current instance (for chain calls).</returns>
 		[NotNull]
-		public SqlClause AddExpression ([NotNull] string key, [CanBeNull] string sql, [NotNull] IDbDataParameter parameter, bool overwrite = false)
+		public SqlClause Add ([NotNull] string key, [CanBeNull] string sql, [NotNull] IDbDataParameter parameter, bool overwrite = false)
 		{
 			if (string.IsNullOrEmpty (sql))
 				return this;
@@ -186,7 +186,7 @@ namespace Rocks.Sql
 				return this;
 
 			this.expressions.AddKeyed (key, sql, overwrite);
-			this.AddParameter (parameter);
+			this.Add (parameter);
 
 			return this;
 		}
@@ -199,15 +199,15 @@ namespace Rocks.Sql
 		/// </summary>
 		/// <returns>Current instance (for chain calls).</returns>
 		[NotNull]
-		public SqlClause AddClause ([NotNull] SqlClause sqlClause)
+		public SqlClause Add ([NotNull] SqlClause sqlClause)
 		{
 			if (sqlClause == null)
 				throw new ArgumentNullException ("sqlClause");
 
-			this.AddExpression (sqlClause.GetSql ());
+			this.Add (sqlClause.GetSql ());
 
 			foreach (var parameter in sqlClause.GetParameters ())
-				this.AddParameter (parameter);
+				this.Add (parameter);
 
 			return this;
 		}
@@ -227,7 +227,7 @@ namespace Rocks.Sql
 		/// </summary>
 		/// <returns>Current instance (for chain calls).</returns>
 		[NotNull]
-		public SqlClause AddClause ([NotNull] string key, [NotNull] SqlClause sqlClause, bool overwrite = false)
+		public SqlClause Add ([NotNull] string key, [NotNull] SqlClause sqlClause, bool overwrite = false)
 		{
 			if (sqlClause == null)
 				throw new ArgumentNullException ("sqlClause");
@@ -235,10 +235,10 @@ namespace Rocks.Sql
 			if (this.ContainsExpression (key) && !overwrite)
 				return this;
 
-			this.AddExpression (key, sqlClause.GetSql (), overwrite);
+			this.Add (key, sqlClause.GetSql (), overwrite);
 
 			foreach (var parameter in sqlClause.GetParameters ())
-				this.AddParameter (parameter);
+				this.Add (parameter);
 
 			return this;
 		}
