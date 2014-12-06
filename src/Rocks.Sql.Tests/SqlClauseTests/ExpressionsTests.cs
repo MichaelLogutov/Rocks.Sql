@@ -8,7 +8,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 	public class ExpressionsTests
 	{
 		[TestMethod]
-		public void GetSql_NoPrefix_NoSuffix_NoSeparator_NoExpressions_ReturnsEmptyString ()
+		public void GetSql_NoPrefix_NoSuffix_NoSeparator_NoExpressions_ByDefault_ReturnsEmptyString ()
 		{
 			// arrange
 			var sut = new SqlClause ();
@@ -20,6 +20,47 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 			// arrange
 			result.Should ().BeEmpty ();
+		}
+
+
+		[TestMethod]
+		public void GetSql_WithPrefix_WithSuffix_WithSeparator_NoExpressions_ByDefault_ReturnsEmptyString ()
+		{
+			// arrange
+			var sut = new SqlClause ();
+
+			sut.Prefix = "prefix ";
+			sut.Separator = " and ";
+			sut.Suffix = " suffix";
+
+
+			// act
+			var result = sut.GetSql ();
+
+
+			// arrange
+			result.Should ().BeEmpty ();
+		}
+
+
+		[TestMethod]
+		public void GetSql_WithPrefix_WithSuffix_WithSeparator_NoExpressions_WithRenderIfEmpty_ReturnsEmptyString ()
+		{
+			// arrange
+			var sut = new SqlClause ();
+
+			sut.Prefix = "prefix ";
+			sut.Separator = " and ";
+			sut.Suffix = " suffix";
+			sut.RenderIfEmpty = true;
+
+
+			// act
+			var result = sut.GetSql ();
+
+
+			// arrange
+			result.Should ().Be ("prefix  suffix");
 		}
 
 
@@ -38,7 +79,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// arrange
-			result.Should ().BeEquivalentToSql ("ab");
+			result.Should ().Be ("ab");
 		}
 
 
@@ -58,7 +99,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// arrange
-			result.Should ().BeEquivalentToSql ("prefix ab");
+			result.Should ().Be ("prefix ab");
 		}
 
 
@@ -78,7 +119,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// arrange
-			result.Should ().BeEquivalentToSql ("ab suffix");
+			result.Should ().Be ("ab suffix");
 		}
 
 
@@ -98,7 +139,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// arrange
-			result.Should ().BeEquivalentToSql ("a and b");
+			result.Should ().Be ("a and b");
 		}
 
 
@@ -120,7 +161,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// arrange
-			result.Should ().BeEquivalentToSql ("prefix a and b suffix");
+			result.Should ().Be ("prefix a and b suffix");
 		}
 
 
@@ -142,7 +183,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// arrange
-			result.Should ().BeEquivalentToSql ("prefix a and b suffix");
+			result.Should ().Be ("prefix a and b suffix");
 		}
 
 
@@ -160,7 +201,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// arrange
-			result.Should ().BeEquivalentToSql ("a");
+			result.Should ().Be ("a");
 		}
 
 
@@ -179,7 +220,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// arrange
-			result.Should ().BeEquivalentToSql ("a");
+			result.Should ().Be ("a");
 		}
 
 
@@ -198,7 +239,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// arrange
-			result.Should ().BeEquivalentToSql ("b");
+			result.Should ().Be ("b");
 		}
 	}
 }

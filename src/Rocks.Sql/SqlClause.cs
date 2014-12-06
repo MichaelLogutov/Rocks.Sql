@@ -35,14 +35,14 @@ namespace Rocks.Sql
 		#region Public properties
 
 		/// <summary>
-		///     Prefix string that will be added before the clause content if it's not empty.
+		///     Prefix string that will be added before the clause content.
 		/// </summary>
 		[CanBeNull]
 		public string Prefix { get; set; }
 
 
 		/// <summary>
-		///     Suffix string that will be added after the clause content if it's not empty.
+		///     Suffix string that will be added after the clause content.
 		/// </summary>
 		[CanBeNull]
 		public string Suffix { get; set; }
@@ -53,6 +53,14 @@ namespace Rocks.Sql
 		/// </summary>
 		[CanBeNull]
 		public string Separator { get; set; }
+
+
+		/// <summary>
+		///     Forces rending of the clause to string even if it contains no expressions.
+		///     Default value is false (skip rendering if no expressions addedd).
+		/// </summary>
+		public bool RenderIfEmpty { get; set; }
+
 
 		/// <summary>
 		///     Returns true if there is no sql expressions in the clause.
@@ -243,7 +251,7 @@ namespace Rocks.Sql
 		[NotNull]
 		public string GetSql ()
 		{
-			if (this.IsEmpty)
+			if (this.IsEmpty && !this.RenderIfEmpty)
 				return string.Empty;
 
 			var result = this.Prefix + string.Join (this.Separator, this.expressions) + this.Suffix;
