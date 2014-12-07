@@ -30,7 +30,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var sut = new SqlClause ();
 
 			sut.Prefix = "prefix ";
-			sut.Separator = " and ";
+			sut.ExpressionsSeparator = " and ";
 			sut.Suffix = " suffix";
 
 
@@ -50,7 +50,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var sut = new SqlClause ();
 
 			sut.Prefix = "prefix ";
-			sut.Separator = " and ";
+			sut.ExpressionsSeparator = " and ";
 			sut.Suffix = " suffix";
 			sut.RenderIfEmpty = true;
 
@@ -129,7 +129,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			// arrange
 			var sut = new SqlClause ();
 
-			sut.Separator = " and ";
+			sut.ExpressionsSeparator = " and ";
 			sut.Add ("a");
 			sut.Add ("b");
 
@@ -150,7 +150,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var sut = new SqlClause ();
 
 			sut.Prefix = "prefix ";
-			sut.Separator = " and ";
+			sut.ExpressionsSeparator = " and ";
 			sut.Suffix = " suffix";
 			sut.Add ("a");
 			sut.Add ("b");
@@ -172,7 +172,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 			var sut = new SqlClause ();
 
 			sut.Prefix = "prefix ";
-			sut.Separator = " and ";
+			sut.ExpressionsSeparator = " and ";
 			sut.Suffix = " suffix";
 			sut.Add ("a");
 			sut.Add ("b");

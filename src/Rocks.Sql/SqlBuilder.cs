@@ -1,5 +1,4 @@
 ﻿using JetBrains.Annotations;
-using Rocks.Sql.IntermediateBuilders;
 
 namespace Rocks.Sql
 {
@@ -12,9 +11,9 @@ namespace Rocks.Sql
 		///     Creates new builder for sql "select" statement.
 		/// </summary>
 		[NotNull]
-		public static SqlSelectColumnsIntermediateBuilder Select (params string[] columns)
+		public static SqlSelectStatementBuilder SelectFrom (string tableName)
 		{
-			return new SqlSelectColumnsIntermediateBuilder (columns);
+			return new SqlSelectStatementBuilder (tableName);
 		}
 	}
 }

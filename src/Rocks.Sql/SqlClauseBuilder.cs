@@ -50,7 +50,10 @@ namespace Rocks.Sql
 		[NotNull]
 		public static SqlClause From (string tableName)
 		{
-			return new SqlClause ().AsStatementsClause ("from" + Environment.NewLine + "\t" + tableName);
+			var sql_clause = new SqlClause ().AsStatementsClause ("from" + Environment.NewLine + "\t" + tableName);
+			sql_clause.RenderIfEmpty = true;
+
+			return sql_clause;
 		}
 
 
@@ -114,13 +117,18 @@ namespace Rocks.Sql
 		///     Creates new <see cref="SqlClause" /> to represent the sql CTE clause.
 		/// </summary>
 		[NotNull]
-		public static SqlClause CTE (string cteName)
+		public static SqlClause CTE (string cteName, SqlClause innerStatement = null)
 		{
 			var sql_clause = new SqlClause ();
 
-			sql_clause.Prefix = ";with " + cteName + " as (" + Environment.NewLine + "\t";
-			sql_clause.Separator = null;
-			sql_clause.Suffix = Environment.NewLine + ")" + Environment.NewLine;
+			sql_clause.Prefix = ";with " + cteName + " as (" + Environment.NewLine;
+			sql_clause.ExpressionsPrefix = "\t";
+			sql_clause.ExpressionsSeparator = Environment.NewLine + "\t";
+			sql_clause.ExpressionsSuffix = Environment.NewLine;
+			sql_clause.Suffix = ")" + Environment.NewLine;
+
+			if (innerStatement != null)
+				sql_clause.Add (innerStatement);
 
 			return sql_clause;
 		}
@@ -135,8 +143,10 @@ namespace Rocks.Sql
 			var sql_clause = new SqlClause ();
 
 			sql_clause.Prefix = "delete from " + tableName + Environment.NewLine;
-			sql_clause.Separator = Environment.NewLine;
-			sql_clause.Suffix = Environment.NewLine;
+			sql_clause.ExpressionsPrefix = null;
+			sql_clause.ExpressionsSeparator = Environment.NewLine;
+			sql_clause.ExpressionsSuffix = Environment.NewLine;
+			sql_clause.Suffix = null;
 			sql_clause.RenderIfEmpty = true;
 
 			return sql_clause;
@@ -151,9 +161,11 @@ namespace Rocks.Sql
 		{
 			var sql_clause = new SqlClause ();
 
-			sql_clause.Prefix = "update " + tableName + Environment.NewLine + "set" + Environment.NewLine + "\t";
-			sql_clause.Separator = "," + Environment.NewLine + "\t";
-			sql_clause.Suffix = Environment.NewLine;
+			sql_clause.Prefix = "update " + tableName + Environment.NewLine;
+			sql_clause.ExpressionsPrefix = "set" + Environment.NewLine + "\t";
+			sql_clause.ExpressionsSeparator = "," + Environment.NewLine + "\t";
+			sql_clause.ExpressionsSuffix = Environment.NewLine;
+			sql_clause.Suffix = null;
 
 			return sql_clause;
 		}
@@ -185,9 +197,11 @@ namespace Rocks.Sql
 		{
 			var sql_clause = new SqlClause ();
 
-			sql_clause.Prefix = "(" + Environment.NewLine + "\t";
-			sql_clause.Separator = "," + Environment.NewLine + "\t";
-			sql_clause.Suffix = Environment.NewLine + ")" + Environment.NewLine;
+			sql_clause.Prefix = "(" + Environment.NewLine;
+			sql_clause.ExpressionsPrefix = "\t";
+			sql_clause.ExpressionsSeparator = "," + Environment.NewLine + "\t";
+			sql_clause.ExpressionsSuffix = Environment.NewLine;
+			sql_clause.Suffix = ")" + Environment.NewLine;
 
 			foreach (var column in columns)
 				sql_clause.Add (column);
@@ -204,9 +218,11 @@ namespace Rocks.Sql
 		{
 			var sql_clause = new SqlClause ();
 
-			sql_clause.Prefix = "values" + Environment.NewLine + "(" + Environment.NewLine + "\t";
-			sql_clause.Separator = "," + Environment.NewLine + "\t";
-			sql_clause.Suffix = Environment.NewLine + ")" + Environment.NewLine;
+			sql_clause.Prefix = "values" + Environment.NewLine + "(" + Environment.NewLine;
+			sql_clause.ExpressionsPrefix = "\t";
+			sql_clause.ExpressionsSeparator = "," + Environment.NewLine + "\t";
+			sql_clause.ExpressionsSuffix = Environment.NewLine;
+			sql_clause.Suffix = ")" + Environment.NewLine;
 
 			return sql_clause;
 		}

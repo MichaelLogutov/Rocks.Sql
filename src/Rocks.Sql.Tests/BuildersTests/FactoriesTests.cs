@@ -15,9 +15,9 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 			// act
 			var result = SqlClauseBuilder.Select ()
-			                       .Add ("Id")
-			                       .Add ("Name")
-			                       .GetSql ();
+			                             .Add ("Id")
+			                             .Add ("Name")
+			                             .GetSql ();
 
 
 			// assert
@@ -34,8 +34,7 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 
 			// act
-			var result = SqlClauseBuilder.Select ("Id", "Name")
-			                       .GetSql ();
+			var result = SqlClauseBuilder.Select ("Id", "Name").GetSql ();
 
 
 			// assert
@@ -52,9 +51,25 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 
 			// act
+			var result = SqlClauseBuilder.From ("TableA").GetSql ();
+
+
+			// assert
+			result.Should ().Be ("from" + Environment.NewLine +
+			                     "\tTableA" + Environment.NewLine);
+		}
+
+
+		[TestMethod]
+		public void From_WithExpressions_InitializesAsCorrectlyFormattedSql ()
+		{
+			// arrange
+
+
+			// act
 			var result = SqlClauseBuilder.From ("TableA")
-			                       .Add ("inner join TableB")
-			                       .GetSql ();
+			                             .Add ("inner join TableB")
+			                             .GetSql ();
 
 
 			// assert
@@ -72,9 +87,9 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 			// act
 			var result = SqlClauseBuilder.Where ()
-			                       .Add ("a = 1")
-			                       .Add ("b = 1")
-			                       .GetSql ();
+			                             .Add ("a = 1")
+			                             .Add ("b = 1")
+			                             .GetSql ();
 
 
 			// assert
@@ -92,9 +107,9 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 			// act
 			var result = SqlClauseBuilder.Where ("or")
-			                       .Add ("a = 1")
-			                       .Add ("b = 1")
-			                       .GetSql ();
+			                             .Add ("a = 1")
+			                             .Add ("b = 1")
+			                             .GetSql ();
 
 
 			// assert
@@ -112,9 +127,9 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 			// act
 			var result = SqlClauseBuilder.GroupBy ()
-			                       .Add ("a")
-			                       .Add ("b")
-			                       .GetSql ();
+			                             .Add ("a")
+			                             .Add ("b")
+			                             .GetSql ();
 
 
 			// assert
@@ -131,8 +146,7 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 
 			// act
-			var result = SqlClauseBuilder.GroupBy ("a", "b")
-			                       .GetSql ();
+			var result = SqlClauseBuilder.GroupBy ("a", "b").GetSql ();
 
 
 			// assert
@@ -150,9 +164,9 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 			// act
 			var result = SqlClauseBuilder.Having ()
-			                       .Add ("a = 1")
-			                       .Add ("b = 1")
-			                       .GetSql ();
+			                             .Add ("a = 1")
+			                             .Add ("b = 1")
+			                             .GetSql ();
 
 
 			// assert
@@ -170,9 +184,9 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 			// act
 			var result = SqlClauseBuilder.Having ("or")
-			                       .Add ("a = 1")
-			                       .Add ("b = 1")
-			                       .GetSql ();
+			                             .Add ("a = 1")
+			                             .Add ("b = 1")
+			                             .GetSql ();
 
 
 			// assert
@@ -190,9 +204,9 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 			// act
 			var result = SqlClauseBuilder.OrderBy ()
-			                       .Add ("a")
-			                       .Add ("b")
-			                       .GetSql ();
+			                             .Add ("a")
+			                             .Add ("b")
+			                             .GetSql ();
 
 
 			// assert
@@ -209,8 +223,7 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 
 			// act
-			var result = SqlClauseBuilder.OrderBy ("a", "b")
-			                       .GetSql ();
+			var result = SqlClauseBuilder.OrderBy ("a", "b").GetSql ();
 
 
 			// assert
@@ -228,8 +241,26 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 			// act
 			var result = SqlClauseBuilder.CTE ("X")
-			                       .Add ("select * from Table")
-			                       .GetSql ();
+			                             .Add ("select * from Table")
+			                             .GetSql ();
+
+
+			// assert
+			result.Should ().Be (";with X as (" + Environment.NewLine +
+			                     "\tselect * from Table" + Environment.NewLine +
+			                     ")" + Environment.NewLine);
+		}
+
+
+		[TestMethod]
+		public void CTE_WithInnerStatement_InitializesAsCorrectlyFormattedSql ()
+		{
+			// arrange
+			var inner_statement = new SqlClause ("select * from Table");
+
+
+			// act
+			var result = SqlClauseBuilder.CTE ("X", inner_statement).GetSql ();
 
 
 			// assert
@@ -247,9 +278,9 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 			// act
 			var result = SqlClauseBuilder.Delete ("Table")
-			                       .Add ("a")
-			                       .Add ("b")
-			                       .GetSql ();
+			                             .Add ("a")
+			                             .Add ("b")
+			                             .GetSql ();
 
 
 			// assert
@@ -266,13 +297,11 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 
 			// act
-			var result = SqlClauseBuilder.Delete ("Table")
-			                       .GetSql ();
+			var result = SqlClauseBuilder.Delete ("Table").GetSql ();
 
 
 			// assert
-			result.Should ().Be ("delete from Table" + Environment.NewLine +
-			                     Environment.NewLine);
+			result.Should ().Be ("delete from Table" + Environment.NewLine);
 		}
 
 
@@ -284,9 +313,9 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 			// act
 			var result = SqlClauseBuilder.Update ("Table")
-			                       .Add ("A = 1")
-			                       .Add ("B = 2")
-			                       .GetSql ();
+			                             .Add ("A = 1")
+			                             .Add ("B = 2")
+			                             .GetSql ();
 
 
 			// assert
@@ -304,13 +333,11 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 
 			// act
-			var result = SqlClauseBuilder.Insert ("Table")
-			                       .GetSql ();
+			var result = SqlClauseBuilder.Insert ("Table").GetSql ();
 
 
 			// assert
-			result.Should ().Be ("insert into Table" + Environment.NewLine +
-			                     Environment.NewLine);
+			result.Should ().Be ("insert into Table" + Environment.NewLine);
 		}
 
 
@@ -321,8 +348,7 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 
 			// act
-			var result = SqlClauseBuilder.Insert ("Table", "Id", "Name")
-			                       .GetSql ();
+			var result = SqlClauseBuilder.Insert ("Table", "Id", "Name").GetSql ();
 
 
 			// assert
@@ -343,9 +369,9 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 			// act
 			var result = SqlClauseBuilder.InsertColumns ()
-			                       .Add ("Id")
-			                       .Add ("Name")
-			                       .GetSql ();
+			                             .Add ("Id")
+			                             .Add ("Name")
+			                             .GetSql ();
 
 
 			// assert
@@ -364,9 +390,9 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 			// act
 			var result = SqlClauseBuilder.Values ()
-			                       .Add ("Id")
-			                       .Add ("Name")
-			                       .GetSql ();
+			                             .Add ("Id")
+			                             .Add ("Name")
+			                             .GetSql ();
 
 
 			// assert

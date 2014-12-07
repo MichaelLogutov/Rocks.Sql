@@ -41,6 +41,10 @@
     <Reference Include="FluentAssertions.Core">
       <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
+    <Reference Include="NCrunch.Framework, Version=2.8.0.34, Culture=neutral, PublicKeyToken=01d101bf6f3e0aea, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NCrunch.Framework.2.8.0.34\lib\portable-windows8+net45\NCrunch.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -59,6 +63,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BuildersTests\SqlSelectStatementBuilderTests.cs" />
     <Compile Include="CommonTest\OrderedHybridCollectionTests.cs" />
     <Compile Include="BuildersTests\FactoriesTests.cs" />
     <Compile Include="SqlClauseTests\AddClauseTests.cs" />
@@ -66,6 +71,7 @@
     <Compile Include="SqlClauseTests\ContainsTests.cs" />
     <Compile Include="SqlClauseTests\ParametersTests.cs" />
     <Compile Include="BuildersTests\SelectUseCaseTests.cs" />
+    <Compile Include="SqlClauseTests\SqlClausePredicatesExtensionsTests.cs" />
     <Compile Include="TestHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlClauseTests\ExpressionsTests.cs" />

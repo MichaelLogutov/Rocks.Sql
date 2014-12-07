@@ -18,9 +18,11 @@ namespace Rocks.Sql
 		[NotNull]
 		public static SqlClause AsColumnsListClause ([NotNull] this SqlClause sqlClause, string statement)
 		{
-			sqlClause.Prefix = statement + Environment.NewLine + "\t";
-			sqlClause.Separator = "," + Environment.NewLine + "\t";
-			sqlClause.Suffix = Environment.NewLine;
+			sqlClause.Prefix = statement + Environment.NewLine;
+			sqlClause.ExpressionsPrefix = "\t";
+			sqlClause.ExpressionsSeparator = "," + Environment.NewLine + "\t";
+			sqlClause.ExpressionsSuffix = Environment.NewLine;
+			sqlClause.Suffix = null;
 
 			return sqlClause;
 		}
@@ -40,9 +42,11 @@ namespace Rocks.Sql
 		[NotNull]
 		public static SqlClause AsPredicatesClause ([NotNull] this SqlClause sqlClause, string statement, string logic = "and")
 		{
-			sqlClause.Prefix = statement + Environment.NewLine + "\t(";
-			sqlClause.Separator = ")" + Environment.NewLine + "\t" + logic + " (";
-			sqlClause.Suffix = ")" + Environment.NewLine;
+			sqlClause.Prefix = statement + Environment.NewLine;
+			sqlClause.ExpressionsPrefix = "\t(";
+			sqlClause.ExpressionsSeparator = ")" + Environment.NewLine + "\t" + logic + " (";
+			sqlClause.ExpressionsSuffix = ")" + Environment.NewLine;
+			sqlClause.Suffix = null;
 
 			return sqlClause;
 		}
@@ -61,9 +65,11 @@ namespace Rocks.Sql
 		[NotNull]
 		public static SqlClause AsStatementsClause ([NotNull] this SqlClause sqlClause, string statement, string indent = "\t")
 		{
-			sqlClause.Prefix = statement + Environment.NewLine + indent;
-			sqlClause.Separator = Environment.NewLine + indent;
-			sqlClause.Suffix = Environment.NewLine;
+			sqlClause.Prefix = statement + Environment.NewLine;
+			sqlClause.ExpressionsPrefix = indent;
+			sqlClause.ExpressionsSeparator = Environment.NewLine + indent;
+			sqlClause.ExpressionsSuffix = Environment.NewLine;
+			sqlClause.Suffix = null;
 
 			return sqlClause;
 		}

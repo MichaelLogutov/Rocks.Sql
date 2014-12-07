@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -62,30 +63,102 @@ namespace Rocks.Sql
 		///     A "where" clause.
 		/// </summary>
 		[NotNull]
-		public SqlClause Where { get { return this.where ?? (this.where = SqlClauseBuilder.Where ()); } }
+		public SqlClause Where
+		{
+			get
+			{
+				if (this.where == null)
+					this.where = SqlClauseBuilder.Where ();
+				return this.where;
+			}
+		}
 
 		/// <summary>
 		///     A "group by" clause.
 		/// </summary>
 		[NotNull]
-		public SqlClause GroupBy { get { return this.groupBy ?? (this.groupBy = SqlClauseBuilder.GroupBy ()); } }
+		public SqlClause GroupBy
+		{
+			get
+			{
+				if (this.groupBy == null)
+					return this.groupBy = SqlClauseBuilder.GroupBy ();
+
+				return this.groupBy;
+			}
+		}
 
 		/// <summary>
 		///     A "having" clause.
 		/// </summary>
 		[NotNull]
-		public SqlClause Having { get { return this.having ?? (this.having = SqlClauseBuilder.Having ()); } }
+		public SqlClause Having
+		{
+			get
+			{
+				if (this.having == null)
+					return this.having = SqlClauseBuilder.Having ();
+
+				return this.having;
+			}
+		}
 
 
 		/// <summary>
 		///     An "order by" clause.
 		/// </summary>
 		[NotNull]
-		public SqlClause OrderBy { get { return this.orderBy ?? (this.orderBy = SqlClauseBuilder.OrderBy ()); } }
+		public SqlClause OrderBy
+		{
+			get
+			{
+				if (this.orderBy == null)
+					return this.orderBy = SqlClauseBuilder.OrderBy ();
+
+				return this.orderBy;
+			}
+		}
 
 		#endregion
 
 		#region Public methods
+
+		/// <summary>
+		///     Adds new column to select statement.
+		///		If the same column (case sensitive) hase been already added, ignores it.
+		/// </summary>
+		public SqlSelectStatementBuilder Column (string columnName)
+		{
+			this.select.Add (columnName, columnName);
+			return this;
+		}
+
+
+		/// <summary>
+		///     Adds new columns to select statement.
+		///		If the same column (case sensitive) hase been already added, ignores it.
+		/// </summary>
+		public SqlSelectStatementBuilder Columns (params string[] columns)
+		{
+			foreach (var column in columns)
+				this.Column (column);
+
+			return this;
+		}
+
+
+		/// <summary>
+		///     Changes the select clause to start with "select top(@topValueParameterName)" text.
+		///		Adds the <paramref name="topValueParameter"/> to the clause parameters list.
+		/// </summary>
+		public SqlSelectStatementBuilder Top ([NotNull] IDbDataParameter topValueParameter)
+		{
+			this.Select.Prefix = "select top(" + topValueParameter.ParameterName + ")" + Environment.NewLine;
+			this.Select.Add (topValueParameter);
+
+			return this;
+		}
+
 
 		/// <summary>
 		///     Builds the sql statement based on current information.

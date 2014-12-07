@@ -7,8 +7,8 @@ using JetBrains.Annotations;
 namespace Rocks.Sql
 {
 	/// <summary>
-	///     Represents a list of expressions/predicates that
-	///     can be rendered as sql clause string with a list of parameters.
+	///     Represents a builder with the list of expressions and predicates
+	///     that can be converted to sql clause string and a list of parameters.
 	/// </summary>
 	public class SqlClause
 	{
@@ -24,10 +24,13 @@ namespace Rocks.Sql
 		/// <summary>
 		///     Initializes a new instance of the <see cref="SqlClause" /> class.
 		/// </summary>
-		public SqlClause ()
+		public SqlClause (string initialExpression = null)
 		{
 			this.expressions = new OrderedHybridCollection<string, string> (StringComparer.Ordinal);
 			this.parameters = new Dictionary<string, IDbDataParameter> (StringComparer.Ordinal);
+
+			if (!string.IsNullOrEmpty (initialExpression))
+				this.Add (initialExpression);
 		}
 
 		#endregion
@@ -49,14 +52,29 @@ namespace Rocks.Sql
 
 
 		/// <summary>
-		///     A separator that will be inserted between clause expressions.
+		///     Prefix string that will be added before the list of clause expressions (if there are any).
 		/// </summary>
 		[CanBeNull]
-		public string Separator { get; set; }
+		public string ExpressionsPrefix { get; set; }
 
 
 		/// <summary>
-		///     Forces rending of the clause to string even if it contains no expressions.
+		///     Suffix string that will be added after the list of clause expressions (if there are any).
+		/// </summary>
+		[CanBeNull]
+		public string ExpressionsSuffix { get; set; }
+
+
+		/// <summary>
+		///     A separator that will be inserted between clause expressions (if there are any).
+		/// </summary>
+		[CanBeNull]
+		public string ExpressionsSeparator { get; set; }
+
+
+		/// <summary>
+		///     Forces rending of the clause <see cref="Suffix"/> and <see cref="Prefix"/> to string
+		///		even if it contains no expressions.
 		///     Default value is false (skip rendering if no expressions addedd).
 		/// </summary>
 		public bool RenderIfEmpty { get; set; }
@@ -251,12 +269,20 @@ namespace Rocks.Sql
 		[NotNull]
 		public string GetSql ()
 		{
-			if (this.IsEmpty && !this.RenderIfEmpty)
+			var is_empty = this.IsEmpty;
+
+			if (is_empty && !this.RenderIfEmpty)
 				return string.Empty;
 
-			var result = this.Prefix + string.Join (this.Separator, this.expressions) + this.Suffix;
+			var result = this.Prefix;
 
-			return result;
+			if (!is_empty)
+				result += this.ExpressionsPrefix + string.Join (this.ExpressionsSeparator, this.expressions) + this.ExpressionsSuffix;
+
+			if (this.Suffix != null)
+				result += this.Suffix;
+
+			return result ?? string.Empty;
 		}
 
 
