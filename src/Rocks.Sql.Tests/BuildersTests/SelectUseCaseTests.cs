@@ -33,26 +33,26 @@ namespace Rocks.Sql.Tests.BuildersTests
 			                                 "order by o.Date");
 
 			parameters.ShouldAllBeEquivalentTo (new[]
-			                                    {
-				                                    new SqlParameter
-				                                    {
-					                                    ParameterName = "@top",
-					                                    SqlDbType = SqlDbType.Int,
-					                                    Value = filter.MaxRecords
-				                                    },
-				                                    new SqlParameter
-				                                    {
-					                                    ParameterName = "@userName",
-					                                    SqlDbType = SqlDbType.VarChar,
-					                                    Value = filter.UserName
-				                                    },
-				                                    new SqlParameter
-				                                    {
-					                                    ParameterName = "@userEmail",
-					                                    SqlDbType = SqlDbType.VarChar,
-					                                    Value = filter.UserEmail
-				                                    }
-			                                    });
+			{
+				new SqlParameter
+				{
+					ParameterName = "@top",
+					SqlDbType = SqlDbType.Int,
+					Value = filter.MaxRecords
+				},
+				new SqlParameter
+				{
+					ParameterName = "@userName",
+					SqlDbType = SqlDbType.VarChar,
+					Value = filter.UserName
+				},
+				new SqlParameter
+				{
+					ParameterName = "@userEmail",
+					SqlDbType = SqlDbType.VarChar,
+					Value = filter.UserEmail
+				}
+			});
 		}
 
 
@@ -83,11 +83,11 @@ namespace Rocks.Sql.Tests.BuildersTests
 		private static Filter CreateFilter ()
 		{
 			return new Filter
-			       {
-				       UserName = "aaa",
-				       UserEmail = "user@email.com",
-				       MaxRecords = 10
-			       };
+			{
+				UserName = "aaa",
+				UserEmail = "user@email.com",
+				MaxRecords = 10
+			};
 		}
 
 
@@ -99,35 +99,35 @@ namespace Rocks.Sql.Tests.BuildersTests
 			if (filter.MaxRecords != null)
 			{
 				sql.Top (new SqlParameter
-				         {
-					         ParameterName = "@top",
-					         SqlDbType = SqlDbType.Int,
-					         Value = filter.MaxRecords
-				         });
+				{
+					ParameterName = "@top",
+					SqlDbType = SqlDbType.Int,
+					Value = filter.MaxRecords
+				});
 			}
 
 			if (!string.IsNullOrEmpty (filter.UserName))
 			{
 				sql.From.Add ("u", "inner join Users as u on (o.UserId = u.Id)");
-				sql.Where.Add ("u.Name = @userName",
-				               new SqlParameter
-				               {
-					               ParameterName = "@userName",
-					               SqlDbType = SqlDbType.VarChar,
-					               Value = filter.UserName
-				               });
+				sql.Where.AddEquals ("u.Name",
+				                     new SqlParameter
+				                     {
+					                     ParameterName = "@userName",
+					                     SqlDbType = SqlDbType.VarChar,
+					                     Value = filter.UserName
+				                     });
 			}
 
 			if (!string.IsNullOrEmpty (filter.UserEmail))
 			{
 				sql.From.Add ("u", "inner join Users as u on (o.UserId = u.Id)");
-				sql.Where.Add ("u.Email = @userEmail",
-				               new SqlParameter
-				               {
-					               ParameterName = "@userEmail",
-					               SqlDbType = SqlDbType.VarChar,
-					               Value = filter.UserEmail
-				               });
+				sql.Where.AddEquals ("u.Email",
+				                     new SqlParameter
+				                     {
+					                     ParameterName = "@userEmail",
+					                     SqlDbType = SqlDbType.VarChar,
+					                     Value = filter.UserEmail
+				                     });
 			}
 
 			sql.OrderBy.Add ("o.Date");
