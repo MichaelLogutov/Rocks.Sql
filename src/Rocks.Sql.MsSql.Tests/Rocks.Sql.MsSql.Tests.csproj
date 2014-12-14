@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9AE7B3F4-D789-4F4D-8B35-88641F194F94}</ProjectGuid>
+    <ProjectGuid>{62290F1A-6A70-4FBE-ADCF-F519EFD9DC2D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rocks.Sql.Tests</RootNamespace>
-    <AssemblyName>Rocks.Sql.Tests</AssemblyName>
+    <RootNamespace>Rocks.Sql.MsSql.Tests</RootNamespace>
+    <AssemblyName>Rocks.Sql.MsSql.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -41,10 +41,6 @@
     <Reference Include="FluentAssertions.Core">
       <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
-    <Reference Include="NCrunch.Framework, Version=2.8.0.34, Culture=neutral, PublicKeyToken=01d101bf6f3e0aea, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NCrunch.Framework.2.8.0.34\lib\portable-windows8+net45\NCrunch.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -63,30 +59,32 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="BuildersTests\SqlSelectStatementBuilderTests.cs" />
-    <Compile Include="CommonTest\OrderedHybridCollectionTests.cs" />
-    <Compile Include="BuildersTests\FactoriesTests.cs" />
-    <Compile Include="SqlClauseTests\AddClauseTests.cs" />
-    <Compile Include="SqlClauseTests\AddWithParameterTests.cs" />
-    <Compile Include="SqlClauseTests\ContainsTests.cs" />
-    <Compile Include="SqlClauseTests\ParametersTests.cs" />
-    <Compile Include="BuildersTests\SelectUseCaseTests.cs" />
-    <Compile Include="SqlClauseTests\SqlClausePredicatesExtensionsTests.cs" />
-    <Compile Include="TestHelpers.cs" />
+    <Compile Include="MsSqlPredicatesExtensionsTests.cs">
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlClauseTests\ExpressionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="MsSqlPredicatesExtensionsTests.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MsSqlPredicatesExtensionsTests.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Rocks.Sql.MsSql\Rocks.Sql.MsSql.csproj">
+      <Project>{d0164f58-841b-404b-9e85-f36f68e4c7cb}</Project>
+      <Name>Rocks.Sql.MsSql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rocks.Sql\Rocks.Sql.csproj">
       <Project>{32A96C64-FE5B-4FEC-8E14-510F9B7AF594}</Project>
       <Name>Rocks.Sql</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Generators\PredicateGeneratorTests.ttinclude">
-      <LastGenOutput>PredicateGenerator1.txt</LastGenOutput>
-    </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

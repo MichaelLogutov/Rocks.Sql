@@ -1,0 +1,89 @@
+﻿<#@ include file="$(SolutionDir)Rocks.Sql\Generators\PredicateGenerator.ttinclude" once="true" #>
+<#@ import namespace="System.Collections.Generic" #><#@ import namespace="System.Globalization" #><#+
+
+
+	public class PredicateTestsGenerator
+	{
+		private readonly TextTransformation tt;
+		private readonly PredicateGeneratorConfiguration configuration;
+
+
+		public PredicateTestsGenerator (TextTransformation tt, PredicateGeneratorConfiguration configuration)
+		{
+			this.tt = tt;
+			this.configuration = configuration;
+		}
+
+
+		/// <summary>
+		///     Performs generation of code.
+		/// </summary>
+		public void Generate ()
+		{
+			var supported_types = this.configuration.SupportedTypes;
+
+			if (supported_types == null || supported_types.Count == 0)
+				return;
+
+			foreach (var type in supported_types)
+				this.GenerateEqualMethodTests (type);
+		}
+
+
+		private void GenerateEqualMethodTests (string type)
+		{
+			var method_prefix = CultureInfo.InvariantCulture.TextInfo.ToTitleCase (type) + "_";
+
+			this.tt.WriteLine
+				(@"		[TestMethod]
+		public void {0}AddEquals_ByDefault_AddsCorrectPredicate ()
+		{{
+			// arrange
+			var sut = new SqlClause ();
+			int value = 1;
+			
+
+			// act
+			sut.AddEquals (""Id"", ""@x"", value);
+			var sql = sut.GetSql ();
+			var parameters = sut.GetParameters ();
+
+
+			// assert
+			sql.Should ().Be (""Id = @x"");
+			parameters.ShouldAllBeEquivalentTo (new[]
+			                                    {{",
+				 method_prefix);
+
+			this.tt.PushIndent ("				                                    ");
+			this.tt.WriteLine (this.configuration.GetCreateDbParameterCode (type, "\"@x\"", "value"));
+			this.tt.PopIndent ();
+
+			this.tt.WriteLine (@"			                                    }});
+		}}
+
+
+		[TestMethod]
+		public void {0}AddEquals_Null_AddsNothing ()
+		{{
+			// arrange
+			var sut = new SqlClause ();
+			int? value = null;
+
+
+			// act
+			sut.AddEquals (""Id"", ""@x"", value);
+			var sql = sut.GetSql ();
+			var parameters = sut.GetParameters ();
+
+
+			// assert
+			sql.Should ().Be (string.Empty);
+			parameters.Should ().BeEmpty ();
+		}}",
+			                   method_prefix);
+		}
+	}
+
+
+	#>

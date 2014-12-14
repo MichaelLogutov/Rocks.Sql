@@ -9,6 +9,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocks.Sql.Tests", "Rocks.Sq
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTestingSandbox", "PerformanceTestingSandbox\PerformanceTestingSandbox.csproj", "{1AC05955-B027-41D8-A928-92322D300C12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocks.Sql.MsSql", "Rocks.Sql.MsSql\Rocks.Sql.MsSql.csproj", "{D0164F58-841B-404B-9E85-F36F68E4C7CB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{D47B5CD1-EAC0-4BD9-841B-15BB48450CDA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MS SQL", "MS SQL", "{0A98658E-7E6E-4CAF-BE6A-C24184E11AB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rocks.Sql.MsSql.Tests", "Rocks.Sql.MsSql.Tests\Rocks.Sql.MsSql.Tests.csproj", "{62290F1A-6A70-4FBE-ADCF-F519EFD9DC2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +35,24 @@ Global
 		{1AC05955-B027-41D8-A928-92322D300C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AC05955-B027-41D8-A928-92322D300C12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AC05955-B027-41D8-A928-92322D300C12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0164F58-841B-404B-9E85-F36F68E4C7CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0164F58-841B-404B-9E85-F36F68E4C7CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0164F58-841B-404B-9E85-F36F68E4C7CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0164F58-841B-404B-9E85-F36F68E4C7CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62290F1A-6A70-4FBE-ADCF-F519EFD9DC2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62290F1A-6A70-4FBE-ADCF-F519EFD9DC2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62290F1A-6A70-4FBE-ADCF-F519EFD9DC2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62290F1A-6A70-4FBE-ADCF-F519EFD9DC2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{32A96C64-FE5B-4FEC-8E14-510F9B7AF594} = {D47B5CD1-EAC0-4BD9-841B-15BB48450CDA}
+		{9AE7B3F4-D789-4F4D-8B35-88641F194F94} = {D47B5CD1-EAC0-4BD9-841B-15BB48450CDA}
+		{1AC05955-B027-41D8-A928-92322D300C12} = {D47B5CD1-EAC0-4BD9-841B-15BB48450CDA}
+		{D0164F58-841B-404B-9E85-F36F68E4C7CB} = {0A98658E-7E6E-4CAF-BE6A-C24184E11AB7}
+		{62290F1A-6A70-4FBE-ADCF-F519EFD9DC2D} = {0A98658E-7E6E-4CAF-BE6A-C24184E11AB7}
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true

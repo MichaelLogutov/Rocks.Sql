@@ -1,0 +1,21 @@
+﻿<#@ include file="$(SolutionDir)Rocks.Sql.Tests\Generators\PredicateGeneratorTests.ttinclude" once="true" #>
+<#@ include file="$(SolutionDir)Rocks.Sql.MsSql\MsSqlPredicateGeneratorConfiguration.ttinclude" once="true" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+// ReSharper disable ExpressionIsAlwaysNull
+// ReSharper disable SuggestVarOrType_BuiltInTypes
+
+namespace Rocks.Sql.MsSql.Tests
+{
+	[TestClass]
+	public class MsSqlPredicatesExtensionsTests
+	{
+<# new PredicateTestsGenerator (this, new MsSqlPredicateGeneratorConfiguration ()).Generate (); #>
+	}
+}

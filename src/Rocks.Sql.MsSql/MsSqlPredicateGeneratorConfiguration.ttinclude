@@ -1,0 +1,41 @@
+﻿<#@ include file="$(SolutionDir)Rocks.Sql\Generators\PredicateGenerator.ttinclude" once="true" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #><#+
+
+
+	public class MsSqlPredicateGeneratorConfiguration : PredicateGeneratorConfiguration
+	{
+		/// <summary>
+		///     Returns a list of types of values for methods that will be generated.
+		/// </summary>
+		public override IList<string> SupportedTypes { get { return new[] { "int" }; } }
+
+
+		/// <summary>
+		///     Generates a code for creation of <see cref="IDbDataParameter" /> from
+		///     given name and value parameters.
+		/// </summary>
+		public override string GetCreateDbParameterCode (string type, string nameParameterName, string valueParameterName)
+		{
+			switch (type)
+			{
+				case "int":
+				{
+					return string.Format (@"new SqlParameter
+{{
+	ParameterName = {0},
+	SqlDbType = SqlDbType.Int,
+	Value = {1}
+}}",
+					                      nameParameterName,
+					                      valueParameterName);
+				}
+
+				default:
+					throw new NotSupportedException ("type: " + type);
+			}
+		}
+	}
+
+
+	#>

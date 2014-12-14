@@ -1,0 +1,84 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" visibility="internal" #>
+<#@ CleanupBehavior processor="T4VSHost" CleanupAfterProcessingtemplate="true" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Data" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #><#+
+
+
+	public abstract class PredicateGeneratorConfiguration
+	{
+		/// <summary>
+		///     Returns a list of types of values for methods that will be generated.
+		/// </summary>
+		public abstract IList<string> SupportedTypes { get; }
+
+
+		/// <summary>
+		///     Generates a code for creation of <see cref="IDbDataParameter" /> from
+		///     given name and value parameters.
+		/// </summary>
+		public abstract string GetCreateDbParameterCode (string type, string nameParameterName, string valueParameterName);
+	}
+
+
+	public class PredicateGenerator
+	{
+		private readonly TextTransformation tt;
+		private readonly PredicateGeneratorConfiguration configuration;
+
+
+		public PredicateGenerator (TextTransformation tt, PredicateGeneratorConfiguration configuration)
+		{
+			this.tt = tt;
+			this.configuration = configuration;
+		}
+
+
+		/// <summary>
+		///     Performs generation of code.
+		/// </summary>
+		public void Generate ()
+		{
+			var supported_types = this.configuration.SupportedTypes;
+			if (supported_types == null || supported_types.Count == 0)
+				return;
+
+			foreach (var type in supported_types)
+				this.GenerateEqualMethod (type);
+		}
+
+
+		private void GenerateEqualMethod (string type)
+		{
+			this.tt.Write (
+				@"		/// <summary>
+		///     Adds ""<paramref name=""columnName"" /> = <paramref name=""parameterName"" />""
+		///     expression to the clause.
+		///		If <paramref name=""value""/> is null then nothing will be added.
+		/// </summary>
+		[MethodImpl (MethodImplOptions.AggressiveInlining)]
+		public static SqlClause AddEquals (this SqlClause sqlClause,
+										   [NotNull] string columnName,
+										   [NotNull] string parameterName,
+										   {0}? value)
+		{{
+			if (value == null)
+				return sqlClause;
+
+			return sqlClause.AddEquals (columnName, ",
+				type);
+
+			this.tt.PushIndent ("			                                        ");
+			this.tt.WriteLine (this.configuration.GetCreateDbParameterCode (type, "parameterName", "value") + ");");
+			this.tt.PopIndent ();
+			this.tt.WriteLine ("			}");
+		}
+	}
+
+
+	#>
