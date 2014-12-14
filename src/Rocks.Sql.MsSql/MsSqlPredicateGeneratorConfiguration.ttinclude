@@ -21,12 +21,12 @@
 			{
 				case "int":
 				{
-					return string.Format (@"new SqlParameter
-{{
-	ParameterName = {0},
-	SqlDbType = SqlDbType.Int,
-	Value = {1}
-}}",
+					return string.Format ("new SqlParameter\r\n" +
+					                      "{{\r\n" +
+					                      "    ParameterName = {0},\r\n" +
+					                      "    SqlDbType = SqlDbType.Int,\r\n" +
+					                      "    Value = {1}\r\n" +
+					                      "}}",
 					                      nameParameterName,
 					                      valueParameterName);
 				}

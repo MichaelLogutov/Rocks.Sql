@@ -3,11 +3,13 @@
 <#@ output extension=".cs" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Data" #>
+<#@ assembly name="$(SolutionDir)Rocks.Sql\bin\$(Configuration)\Rocks.Sql.dll" #>
 <#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
 <#@ import namespace="System.Data" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #><#+
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Rocks.Sql.Generators" #><#+
 
 
 	public abstract class PredicateGeneratorConfiguration
@@ -49,34 +51,98 @@
 				return;
 
 			foreach (var type in supported_types)
-				this.GenerateEqualMethod (type);
+			{
+				this.GenerateAddEqualsMethod (type);
+
+				this.tt.WriteMethodsSeparator ();
+				this.GenerateAddNotEqualsMethod (type);
+
+				this.tt.WriteMethodsSeparator ();
+				this.GenerateAddGreaterMethod (type);
+
+				this.tt.WriteMethodsSeparator ();
+				this.GenerateAddGreaterOrEqualsMethod (type);
+
+				this.tt.WriteMethodsSeparator ();
+				this.GenerateAddLessMethod (type);
+
+				this.tt.WriteMethodsSeparator ();
+				this.GenerateAddLessOrEqualsMethod (type);
+			}
 		}
 
 
-		private void GenerateEqualMethod (string type)
+		private void GeneratePredicateMethod (string type, string commentOperand, string methodName)
 		{
-			this.tt.Write (
-				@"		/// <summary>
-		///     Adds ""<paramref name=""columnName"" /> = <paramref name=""parameterName"" />""
-		///     expression to the clause.
-		///		If <paramref name=""value""/> is null then nothing will be added.
-		/// </summary>
-		[MethodImpl (MethodImplOptions.AggressiveInlining)]
-		public static SqlClause AddEquals (this SqlClause sqlClause,
-										   [NotNull] string columnName,
-										   [NotNull] string parameterName,
-										   {0}? value)
-		{{
-			if (value == null)
-				return sqlClause;
+			this.tt.PushIndent ("        ");
+			{
+				this.tt.WriteLine ("/// <summary>");
+				this.tt.WriteLine ("///     Adds \"<paramref name=\"columnName\" /> {0} <paramref name=\"parameterName\" />", commentOperand);
+				this.tt.WriteLine ("///     expression to the clause.");
+				this.tt.WriteLine ("///     If <paramref name=\"value\"/> is null then nothing will be added.");
+				this.tt.WriteLine ("/// </summary>");
+				this.tt.WriteLine ("[MethodImpl (MethodImplOptions.AggressiveInlining)]");
 
-			return sqlClause.AddEquals (columnName, ",
-				type);
+				this.tt.WriteAndPushIndent ("public static SqlClause {0} (", methodName);
+				{
+					this.tt.WriteLine ("this SqlClause sqlClause,");
+					this.tt.WriteLine ("[NotNull] string columnName,");
+					this.tt.WriteLine ("[NotNull] string parameterName,");
+					this.tt.WriteLine ("{0}? value)", type);
+				}
+				this.tt.PopIndent ();
 
-			this.tt.PushIndent ("			                                        ");
-			this.tt.WriteLine (this.configuration.GetCreateDbParameterCode (type, "parameterName", "value") + ");");
+				this.tt.WriteLine ("{");
+				this.tt.PushIndent ("    ");
+				{
+					this.tt.WriteLine ("if (value == null)");
+					this.tt.WriteLine ("    return sqlClause;");
+					this.tt.WriteLine (string.Empty);
+
+					this.tt.WriteAndPushIndent ("return sqlClause.{0} (columnName, ", methodName);
+					this.tt.WriteLine (this.configuration.GetCreateDbParameterCode (type, "parameterName", "value") + ");");
+					this.tt.PopIndent ();
+				}
+				this.tt.PopIndent ();
+				this.tt.WriteLine ("}");
+			}
 			this.tt.PopIndent ();
-			this.tt.WriteLine ("			}");
+		}
+
+
+		private void GenerateAddEqualsMethod (string type)
+		{
+			this.GeneratePredicateMethod (type, "=", "AddEquals");
+		}
+
+
+		private void GenerateAddNotEqualsMethod (string type)
+		{
+			this.GeneratePredicateMethod (type, "&lt;&gt;", "AddNotEquals");
+		}
+
+
+		private void GenerateAddGreaterMethod (string type)
+		{
+			this.GeneratePredicateMethod (type, "&gt;", "AddGreater");
+		}
+
+
+		private void GenerateAddGreaterOrEqualsMethod (string type)
+		{
+			this.GeneratePredicateMethod (type, "&gt;=", "AddGreaterOrEquals");
+		}
+
+
+		private void GenerateAddLessMethod (string type)
+		{
+			this.GeneratePredicateMethod (type, "&gt;", "AddLess");
+		}
+
+
+		private void GenerateAddLessOrEqualsMethod (string type)
+		{
+			this.GeneratePredicateMethod (type, "&gt;=", "AddLessOrEquals");
 		}
 	}
 

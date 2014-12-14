@@ -26,62 +26,148 @@
 				return;
 
 			foreach (var type in supported_types)
-				this.GenerateEqualMethodTests (type);
+			{
+				this.GenerateAddEqualsTests (type);
+
+				this.tt.WriteNewLines (2);
+				this.GenerateAddNotEqualsTests (type);
+
+				this.tt.WriteNewLines (2);
+				this.GenerateAddGreaterTests (type);
+
+				this.tt.WriteNewLines (2);
+				this.GenerateAddGreaterOrEqualsTests (type);
+
+				this.tt.WriteNewLines (2);
+				this.GenerateAddLessTests (type);
+
+				this.tt.WriteNewLines (2);
+				this.GenerateAddLessOrEqualsTests (type);
+			}
 		}
 
 
-		private void GenerateEqualMethodTests (string type)
+		private void GenerateTest (string typeForPrefix, string methodName, Action arrange, Action act, Action assert)
 		{
-			var method_prefix = CultureInfo.InvariantCulture.TextInfo.ToTitleCase (type) + "_";
+			var method_prefix = !string.IsNullOrEmpty (typeForPrefix)
+				                    ? CultureInfo.InvariantCulture.TextInfo.ToTitleCase (typeForPrefix) + "_"
+				                    : string.Empty;
 
-			this.tt.WriteLine
-				(@"		[TestMethod]
-		public void {0}AddEquals_ByDefault_AddsCorrectPredicate ()
-		{{
-			// arrange
-			var sut = new SqlClause ();
-			int value = 1;
-			
+			this.tt.PushIndent ("        ");
+			{
+				this.tt.WriteLine ("[TestMethod]");
+				this.tt.WriteLine ("public void {0}{1} ()", method_prefix, methodName);
+				this.tt.WriteLine ("{");
+				this.tt.PushIndent ("    ");
+				{
+					this.tt.WriteLine ("// arrange");
+					arrange ();
 
-			// act
-			sut.AddEquals (""Id"", ""@x"", value);
-			var sql = sut.GetSql ();
-			var parameters = sut.GetParameters ();
+					this.tt.WriteNewLines (2);
+					this.tt.WriteLine ("// act");
+					act ();
 
-
-			// assert
-			sql.Should ().Be (""Id = @x"");
-			parameters.ShouldAllBeEquivalentTo (new[]
-			                                    {{",
-				 method_prefix);
-
-			this.tt.PushIndent ("				                                    ");
-			this.tt.WriteLine (this.configuration.GetCreateDbParameterCode (type, "\"@x\"", "value"));
+					this.tt.WriteNewLines (2);
+					this.tt.WriteLine ("// assert");
+					assert ();
+				}
+				this.tt.PopIndent ();
+				this.tt.WriteLine ("}");
+			}
 			this.tt.PopIndent ();
-
-			this.tt.WriteLine (@"			                                    }});
-		}}
+		}
 
 
-		[TestMethod]
-		public void {0}AddEquals_Null_AddsNothing ()
-		{{
-			// arrange
-			var sut = new SqlClause ();
-			int? value = null;
+		private void GeneratePredicateMethodTests (string type, string testedMethodName, string expectedSqlOperand)
+		{
+			this.GenerateTest
+				(type,
+				 string.Format ("{0}_ByDefault_AddsCorrectPredicate", testedMethodName),
+				 arrange: () =>
+				 {
+					 this.tt.WriteLine ("var sut = new SqlClause ();");
+					 this.tt.WriteLine ("{0} value = 1;", type);
+				 },
+				 act: () =>
+				 {
+					 this.tt.WriteLine ("sut.{0} (\"Id\", \"@x\", value);", testedMethodName);
+					 this.tt.WriteLine ("var sql = sut.GetSql ();");
+					 this.tt.WriteLine ("var parameters = sut.GetParameters ();");
+				 },
+				 assert: () =>
+				 {
+					 this.tt.WriteLine ("sql.Should ().Be (\"Id {0} @x\");", expectedSqlOperand);
+					 this.tt.WriteAndPushIndent ("parameters.ShouldAllBeEquivalentTo (");
+					 {
+						 this.tt.WriteLine ("new[]");
+						 this.tt.WriteLine ("{");
+						 this.tt.PushIndent ("    ");
+						 {
+							 this.tt.WriteLine (this.configuration.GetCreateDbParameterCode (type, "\"@x\"", "value"));
+						 }
+						 this.tt.PopIndent ();
+						 this.tt.WriteLine ("});");
+					 }
+					 this.tt.PopIndent ();
+				 });
+
+			this.tt.WriteNewLines (2);
+
+			this.GenerateTest
+				(type,
+				 string.Format ("{0}_Null_AddsNothing", testedMethodName),
+				 arrange: () =>
+				 {
+					 this.tt.WriteLine ("var sut = new SqlClause ();");
+					 this.tt.WriteLine ("{0}? value = null;", type);
+				 },
+				 act: () =>
+				 {
+					 this.tt.WriteLine ("sut.{0} (\"Id\", \"@x\", value);", testedMethodName);
+					 this.tt.WriteLine ("var sql = sut.GetSql ();");
+					 this.tt.WriteLine ("var parameters = sut.GetParameters ();");
+				 },
+				 assert: () =>
+				 {
+					 this.tt.WriteLine ("sql.Should ().Be (string.Empty);");
+					 this.tt.WriteLine ("parameters.Should ().BeEmpty ();");
+				 });
+		}
 
 
-			// act
-			sut.AddEquals (""Id"", ""@x"", value);
-			var sql = sut.GetSql ();
-			var parameters = sut.GetParameters ();
+		private void GenerateAddEqualsTests (string type)
+		{
+			this.GeneratePredicateMethodTests (type, "AddEquals", "=");
+		}
 
 
-			// assert
-			sql.Should ().Be (string.Empty);
-			parameters.Should ().BeEmpty ();
-		}}",
-			                   method_prefix);
+		private void GenerateAddNotEqualsTests (string type)
+		{
+			this.GeneratePredicateMethodTests (type, "AddNotEquals", "<>");
+		}
+
+
+		private void GenerateAddGreaterTests (string type)
+		{
+			this.GeneratePredicateMethodTests (type, "AddGreater", ">");
+		}
+
+
+		private void GenerateAddGreaterOrEqualsTests (string type)
+		{
+			this.GeneratePredicateMethodTests (type, "AddGreaterOrEquals", ">=");
+		}
+
+
+		private void GenerateAddLessTests (string type)
+		{
+			this.GeneratePredicateMethodTests (type, "AddLess", "<");
+		}
+
+
+		private void GenerateAddLessOrEqualsTests (string type)
+		{
+			this.GeneratePredicateMethodTests (type, "AddLessOrEquals", "<=");
 		}
 	}
 

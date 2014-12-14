@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generators\PredicateGenerator.cs" />
+    <Compile Include="Generators\TextTransformationExtensions.cs" />
     <Compile Include="InitializersExtensions.cs" />
     <Compile Include="OrderedHybridCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
