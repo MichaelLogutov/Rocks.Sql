@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace Rocks.Sql.MsSql
 {
-    public static class MsSqlPredicatesTimespanExtensions
+    public static class MsSqlPredicatesTimeSpanExtensions
     {
         /// <summary>
         ///     Adds "<paramref name="columnName" /> = <paramref name="parameterName" />
@@ -51,6 +53,86 @@ namespace Rocks.Sql.MsSql
                                                            SqlDbType = SqlDbType.Time,
                                                            Value = value
                                                        });
+        }
+
+
+        /// <summary>
+        ///     Adds "<paramref name="columnName" /> in (<paramref name="parameterName" />1, 
+        ///     <paramref name="parameterName" />2, ...) expression to the clause.
+        ///     If <paramref name="values"/> is null or contains no elements then nothing will be added.
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public static SqlClause AddIn (this SqlClause sqlClause,
+                                       [NotNull] string columnName,
+                                       [NotNull] string parameterName,
+                                       [CanBeNull] IEnumerable<TimeSpan> values)
+        {
+            if (values == null)
+                return sqlClause;
+
+            var parameters = values.Select ((value, index) => new SqlParameter
+                                                              {
+                                                                  ParameterName = parameterName + (index + 1),
+                                                                  SqlDbType = SqlDbType.Time,
+                                                                  Value = value
+                                                              });
+
+            return sqlClause.AddIn (columnName, parameters);
+        }
+
+
+        /// <summary>
+        ///     Adds "<paramref name="columnName" /> in (<paramref name="parameterName" />1, 
+        ///     <paramref name="parameterName" />2, ...) expression to the clause.
+        ///     If <paramref name="values"/> is null or contains no elements then nothing will be added.
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public static SqlClause AddIn (this SqlClause sqlClause,
+                                       [NotNull] string columnName,
+                                       [NotNull] string parameterName,
+                                       [CanBeNull] params TimeSpan[] values)
+        {
+            return sqlClause.AddIn (columnName, parameterName, (IEnumerable<TimeSpan>) values);
+        }
+
+
+        /// <summary>
+        ///     Adds "<paramref name="columnName" /> not in (<paramref name="parameterName" />1, 
+        ///     <paramref name="parameterName" />2, ...) expression to the clause.
+        ///     If <paramref name="values"/> is null or contains no elements then nothing will be added.
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public static SqlClause AddNotIn (this SqlClause sqlClause,
+                                          [NotNull] string columnName,
+                                          [NotNull] string parameterName,
+                                          [CanBeNull] IEnumerable<TimeSpan> values)
+        {
+            if (values == null)
+                return sqlClause;
+
+            var parameters = values.Select ((value, index) => new SqlParameter
+                                                              {
+                                                                  ParameterName = parameterName + (index + 1),
+                                                                  SqlDbType = SqlDbType.Time,
+                                                                  Value = value
+                                                              });
+
+            return sqlClause.AddNotIn (columnName, parameters);
+        }
+
+
+        /// <summary>
+        ///     Adds "<paramref name="columnName" /> not in (<paramref name="parameterName" />1, 
+        ///     <paramref name="parameterName" />2, ...) expression to the clause.
+        ///     If <paramref name="values"/> is null or contains no elements then nothing will be added.
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public static SqlClause AddNotIn (this SqlClause sqlClause,
+                                          [NotNull] string columnName,
+                                          [NotNull] string parameterName,
+                                          [CanBeNull] params TimeSpan[] values)
+        {
+            return sqlClause.AddNotIn (columnName, parameterName, (IEnumerable<TimeSpan>) values);
         }
 
 

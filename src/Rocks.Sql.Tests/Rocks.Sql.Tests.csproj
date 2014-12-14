@@ -70,7 +70,6 @@
     <Compile Include="SqlClauseTests\AddWithParameterTests.cs" />
     <Compile Include="SqlClauseTests\ContainsTests.cs" />
     <Compile Include="SqlClauseTests\ParametersTests.cs" />
-    <Compile Include="BuildersTests\SelectUseCaseTests.cs" />
     <Compile Include="SqlClauseTests\SqlClausePredicatesExtensionsTests.cs" />
     <Compile Include="TestHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

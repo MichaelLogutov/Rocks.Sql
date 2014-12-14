@@ -10,7 +10,7 @@ namespace Rocks.Sql.CodeGeneration
 			if (string.IsNullOrEmpty (str))
 				return str;
 
-			return char.ToUpperInvariant (str[0]) + str.Substring (1).ToLowerInvariant ();
+			return char.ToUpperInvariant (str[0]) + str.Substring (1);
 		}
 	}
 }

@@ -11,6 +11,8 @@
   <MetricsExclusionList>
 PerformanceTestingSandbox\PerformanceTestingSandbox.csproj
 Rocks.Sql.CodeGeneration\Rocks.Sql.CodeGeneration.csproj
+Rocks.Sql.MsSql.Tests\Rocks.Sql.MsSql.Tests.csproj
+Rocks.Sql.Tests\Rocks.Sql.Tests.csproj
 Rocks.Sql\Rocks.Sql.csproj\Properties
 </MetricsExclusionList>
 </SolutionConfiguration>

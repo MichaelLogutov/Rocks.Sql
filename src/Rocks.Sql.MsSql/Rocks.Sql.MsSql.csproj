@@ -45,10 +45,10 @@
     <Compile Include="MsSqlPredicatesByteExtensions.cs">
       <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
     </Compile>
-    <Compile Include="MsSqlPredicatesDatetimeExtensions.cs">
+    <Compile Include="MsSqlPredicatesDateTimeExtensions.cs">
       <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
     </Compile>
-    <Compile Include="MsSqlPredicatesDatetimeoffsetExtensions.cs">
+    <Compile Include="MsSqlPredicatesDateTimeOffsetExtensions.cs">
       <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
     </Compile>
     <Compile Include="MsSqlPredicatesDecimalExtensions.cs">
@@ -72,7 +72,7 @@
     <Compile Include="MsSqlPredicatesStringExtensions.cs">
       <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
     </Compile>
-    <Compile Include="MsSqlPredicatesTimespanExtensions.cs">
+    <Compile Include="MsSqlPredicatesTimeSpanExtensions.cs">
       <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

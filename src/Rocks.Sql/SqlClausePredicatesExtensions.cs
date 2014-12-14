@@ -243,10 +243,6 @@ namespace Rocks.Sql
 			if (list.Count == 0)
 				return sqlClause;
 
-			if (list.Count == 1)
-				return sqlClause.AddEquals (columnName, list[0]);
-
-
 			var expression = new StringBuilder (columnName);
 			expression.Append (" in (");
 
@@ -300,10 +296,6 @@ namespace Rocks.Sql
 
 			if (list.Count == 0)
 				return sqlClause;
-
-			if (list.Count == 1)
-				return sqlClause.AddNotEquals (columnName, list[0]);
-
 
 			var expression = new StringBuilder (columnName);
 			expression.Append (" not in (");

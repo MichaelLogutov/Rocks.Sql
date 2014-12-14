@@ -596,7 +596,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// assert
-			sql.Should ().Be ("Id = @x");
+			sql.Should ().Be ("Id in (@x)");
 			parameters.Should ().Equal (parameter);
 		}
 
@@ -637,7 +637,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// assert
-			sql.Should ().Be ("Id <> @x");
+			sql.Should ().Be ("Id not in (@x)");
 			parameters.Should ().Equal (parameter);
 		}
 

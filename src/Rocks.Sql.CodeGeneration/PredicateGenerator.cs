@@ -32,10 +32,10 @@ namespace Rocks.Sql.CodeGeneration
 		{
 			if (this.configuration.GenerateEqualsMethods)
 			{
-				this.GenerateAddEqualsMethod ();
+				this.GenerateAddEqualsMethods ();
 
 				this.tt.WriteMethodsSeparator ();
-				this.GenerateAddNotEqualsMethod ();
+				this.GenerateAddInMethods ();
 			}
 
 			if (this.configuration.GenerateGreaterOrLessMethods)
@@ -43,22 +43,13 @@ namespace Rocks.Sql.CodeGeneration
 				if (this.configuration.GenerateEqualsMethods)
 					this.tt.WriteMethodsSeparator ();
 
-				this.GenerateAddGreaterMethod ();
+				this.GenerateAddGreaterMethods ();
 
 				this.tt.WriteMethodsSeparator ();
-				this.GenerateAddGreaterOrEqualsMethod ();
+				this.GenerateAddLessMethods ();
 
 				this.tt.WriteMethodsSeparator ();
-				this.GenerateAddLessMethod ();
-
-				this.tt.WriteMethodsSeparator ();
-				this.GenerateAddLessOrEqualsMethod ();
-
-				this.tt.WriteMethodsSeparator ();
-				this.GenerateAddBetweenMethod (false);
-
-				this.tt.WriteMethodsSeparator ();
-				this.GenerateAddBetweenMethod (true);
+				this.GenerateAddBetweenMethods ();
 			}
 
 			if (this.configuration.GenerateLikeMethods)
@@ -66,10 +57,13 @@ namespace Rocks.Sql.CodeGeneration
 				if (this.configuration.GenerateEqualsMethods || this.configuration.GenerateGreaterOrLessMethods)
 					this.tt.WriteMethodsSeparator ();
 
-				this.GenerateAddLikeMethod ();
+				this.GenerateAddLikeMethods ();
 
 				this.tt.WriteMethodsSeparator ();
-				this.GenerateAddNotLikeMethod ();
+				this.GenerateAddStartsWithMethods ();
+
+				this.tt.WriteMethodsSeparator ();
+				this.GenerateAddEndsWithMethods ();
 			}
 		}
 
@@ -79,6 +73,8 @@ namespace Rocks.Sql.CodeGeneration
 
 		private void GeneratePredicateMethod (string commentOperand, string methodName)
 		{
+			var can_be_null_attribute = !this.configuration.IsNullable ? "[CanBeNull] " : string.Empty;
+
 			this.tt.WriteLine ("/// <summary>");
 			this.tt.WriteLine ("///     Adds \"<paramref name=\"columnName\" /> {0} <paramref name=\"parameterName\" />", commentOperand);
 			this.tt.WriteLine ("///     expression to the clause.");
@@ -91,12 +87,11 @@ namespace Rocks.Sql.CodeGeneration
 				this.tt.WriteLine ("this SqlClause sqlClause,");
 				this.tt.WriteLine ("[NotNull] string columnName,");
 				this.tt.WriteLine ("[NotNull] string parameterName,");
-				this.tt.WriteLine ("{0} value)", this.configuration.GetTypeDeclaration ());
+				this.tt.WriteLine ("{0}{1} value)", can_be_null_attribute, this.configuration.GetTypeDeclaration ());
 			}
 			this.tt.PopIndent ();
 
-			this.tt.WriteLine ("{");
-			this.tt.PushIndent ("    ");
+			this.tt.OpenScope ();
 			{
 				this.tt.WriteLine ("if (value == null)");
 				this.tt.WriteLine ("    return sqlClause;");
@@ -106,44 +101,110 @@ namespace Rocks.Sql.CodeGeneration
 				this.tt.WriteLine (this.configuration.GetCreateDbParameterCode ("parameterName", "value") + ");");
 				this.tt.PopIndent ();
 			}
-			this.tt.PopIndent ();
-			this.tt.WriteLine ("}");
+			this.tt.CloseScope ();
 		}
 
 
-		private void GenerateAddEqualsMethod ()
+		private void GenerateAddEqualsMethods ()
 		{
 			this.GeneratePredicateMethod ("=", "AddEquals");
-		}
-
-
-		private void GenerateAddNotEqualsMethod ()
-		{
+			this.tt.WriteMethodsSeparator ();
 			this.GeneratePredicateMethod ("&lt;&gt;", "AddNotEquals");
 		}
 
 
-		private void GenerateAddGreaterMethod ()
+		private void GenerateAddInMethods ()
 		{
-			this.GeneratePredicateMethod ("&gt;", "AddGreater");
+			this.GenerateAddInMethod (false);
+			this.tt.WriteMethodsSeparator ();
+			this.GenerateAddInMethod (true);
 		}
 
 
-		private void GenerateAddGreaterOrEqualsMethod ()
+		private void GenerateAddInMethod (bool not)
 		{
+			var method_name = !not ? "AddIn" : "AddNotIn";
+			var comment_operand = !not ? "in" : "not in";
+
+			Action write_comment = () =>
+			{
+				this.tt.WriteLine ("/// <summary>");
+				this.tt.WriteLine ("///     Adds \"<paramref name=\"columnName\" /> {0} (<paramref name=\"parameterName\" />1, ", comment_operand);
+				this.tt.WriteLine ("///     <paramref name=\"parameterName\" />2, ...) expression to the clause.");
+				this.tt.WriteLine ("///     If <paramref name=\"values\"/> is null or contains no elements then nothing will be added.");
+				this.tt.WriteLine ("/// </summary>");
+			};
+
+			write_comment ();
+			this.tt.WriteLine ("[MethodImpl (MethodImplOptions.AggressiveInlining)]");
+			this.tt.WriteAndPushIndent ("public static SqlClause {0} (", method_name);
+			{
+				this.tt.WriteLine ("this SqlClause sqlClause,");
+				this.tt.WriteLine ("[NotNull] string columnName,");
+				this.tt.WriteLine ("[NotNull] string parameterName,");
+				this.tt.WriteLine ("[CanBeNull] IEnumerable<{0}> values)", this.configuration.Type);
+			}
+			this.tt.PopIndent ();
+
+			this.tt.OpenScope ();
+			{
+				this.tt.WriteLine ("if (values == null)");
+				this.tt.WriteLine ("    return sqlClause;");
+
+				this.tt.WriteLine (string.Empty);
+				this.tt.WriteAndPushIndent ("var parameters = values.Select ((value, index) => ");
+				this.tt.WriteLine (this.configuration.GetCreateDbParameterCode ("parameterName + (index + 1)", "value") + ");");
+				this.tt.PopIndent ();
+
+				this.tt.WriteLine (string.Empty);
+				this.tt.WriteLine ("return sqlClause.{0} (columnName, parameters);", method_name);
+			}
+			this.tt.CloseScope ();
+
+
+			this.tt.WriteMethodsSeparator ();
+
+			write_comment ();
+			this.tt.WriteLine ("[MethodImpl (MethodImplOptions.AggressiveInlining)]");
+			this.tt.WriteAndPushIndent ("public static SqlClause {0} (", method_name);
+			{
+				this.tt.WriteLine ("this SqlClause sqlClause,");
+				this.tt.WriteLine ("[NotNull] string columnName,");
+				this.tt.WriteLine ("[NotNull] string parameterName,");
+				this.tt.WriteLine ("[CanBeNull] params {0}[] values)", this.configuration.Type);
+			}
+			this.tt.PopIndent ();
+			this.tt.OpenScope ();
+			{
+				this.tt.WriteLine ("return sqlClause.{0} (columnName, parameterName, (IEnumerable<{1}>) values);",
+				                   method_name,
+				                   this.configuration.Type);
+			}
+			this.tt.CloseScope ();
+		}
+
+
+		private void GenerateAddGreaterMethods ()
+		{
+			this.GeneratePredicateMethod ("&gt;", "AddGreater");
+			this.tt.WriteMethodsSeparator ();
 			this.GeneratePredicateMethod ("&gt;=", "AddGreaterOrEquals");
 		}
 
 
-		private void GenerateAddLessMethod ()
+		private void GenerateAddLessMethods ()
 		{
 			this.GeneratePredicateMethod ("&gt;", "AddLess");
+			this.tt.WriteMethodsSeparator ();
+			this.GeneratePredicateMethod ("&gt;=", "AddLessOrEquals");
 		}
 
 
-		private void GenerateAddLessOrEqualsMethod ()
+		private void GenerateAddBetweenMethods ()
 		{
-			this.GeneratePredicateMethod ("&gt;=", "AddLessOrEquals");
+			this.GenerateAddBetweenMethod (false);
+			this.tt.WriteMethodsSeparator ();
+			this.GenerateAddBetweenMethod (true);
 		}
 
 
@@ -153,6 +214,7 @@ namespace Rocks.Sql.CodeGeneration
 			var comment_sql_operand_if_value2_null = !not ? "&gt;=" : "&lt;";
 			var comment_sql_operand_if_value_null = !not ? "&lt;=" : "&gt;";
 			var method_name = !not ? "AddBetween" : "AddNotBetween";
+			var can_be_null_attribute = !this.configuration.IsNullable ? "[CanBeNull] " : string.Empty;
 
 			this.tt.WriteLine ("/// <summary>");
 			this.tt.WriteLine ("///     <para>");
@@ -185,14 +247,13 @@ namespace Rocks.Sql.CodeGeneration
 				this.tt.WriteLine ("this SqlClause sqlClause,");
 				this.tt.WriteLine ("[NotNull] string columnName,");
 				this.tt.WriteLine ("[NotNull] string parameterName,");
-				this.tt.WriteLine ("{0} value,", this.configuration.GetTypeDeclaration ());
+				this.tt.WriteLine ("{0}{1} value,", can_be_null_attribute, this.configuration.GetTypeDeclaration ());
 				this.tt.WriteLine ("[NotNull] string parameterName2,");
-				this.tt.WriteLine ("{0} value2)", this.configuration.GetTypeDeclaration ());
+				this.tt.WriteLine ("{0}{1} value2)", can_be_null_attribute, this.configuration.GetTypeDeclaration ());
 			}
 			this.tt.PopIndent ();
 
-			this.tt.WriteLine ("{");
-			this.tt.PushIndent ("    ");
+			this.tt.OpenScope ();
 			{
 				this.tt.WriteLine ("if (value == null && value2 == null)");
 				this.tt.WriteLine ("    return sqlClause;");
@@ -210,20 +271,107 @@ namespace Rocks.Sql.CodeGeneration
 				this.tt.WriteLine (string.Empty);
 				this.tt.WriteLine ("return sqlClause.{0} (columnName, parameter, parameter2);", method_name);
 			}
-			this.tt.PopIndent ();
-			this.tt.WriteLine ("}");
+			this.tt.CloseScope ();
 		}
 
 
-		private void GenerateAddLikeMethod ()
+		private void GenerateAddLikeMethods ()
 		{
 			this.GeneratePredicateMethod ("like", "AddLike");
+			this.tt.WriteMethodsSeparator ();
+			this.GeneratePredicateMethod ("not like", "AddNotLike");
 		}
 
 
-		private void GenerateAddNotLikeMethod ()
+		private void GenerateAddStartsWithMethods ()
 		{
-			this.GeneratePredicateMethod ("not like", "AddNotLike");
+			this.GenerateAddStartsWithMethods (false);
+			this.tt.WriteMethodsSeparator ();
+			this.GenerateAddStartsWithMethods (true);
+		}
+
+
+		private void GenerateAddStartsWithMethods (bool not)
+		{
+			var comment_operand = !not ? "like" : "not like";
+			var method_name = !not ? "AddStartsWith" : "AddNotStartsWith";
+			var add_method_name = !not ? "AddLike" : "AddNotLike";
+
+			this.tt.WriteLine ("/// <summary>");
+			this.tt.WriteLine ("///     Adds \"<paramref name=\"columnName\" /> {0} <paramref name=\"parameterName\" />", comment_operand);
+			this.tt.WriteLine ("///     expression to the clause. The <paramref name=\"value\"/> parameter is escaped");
+			this.tt.WriteLine ("///     and appended with the '%' sign.");
+			this.tt.WriteLine ("///     If <paramref name=\"value\"/> is null or empty string then nothing will be added.");
+			this.tt.WriteLine ("/// </summary>");
+			this.tt.WriteLine ("[MethodImpl (MethodImplOptions.AggressiveInlining)]");
+
+			this.tt.WriteAndPushIndent ("public static SqlClause {0} (", method_name);
+			{
+				this.tt.WriteLine ("this SqlClause sqlClause,");
+				this.tt.WriteLine ("[NotNull] string columnName,");
+				this.tt.WriteLine ("[NotNull] string parameterName,");
+				this.tt.WriteLine ("[CanBeNull] string value)");
+			}
+			this.tt.PopIndent ();
+
+			this.tt.OpenScope ();
+			{
+				this.tt.WriteLine ("if (string.IsNullOrEmpty (value))");
+				this.tt.WriteLine ("    return sqlClause;");
+
+				this.tt.WriteLine (string.Empty);
+
+				this.tt.WriteAndPushIndent ("return sqlClause.{0} (columnName, ", add_method_name);
+				this.tt.WriteLine (this.configuration.GetCreateDbParameterCode ("parameterName", "value.Replace (\"%\", \"\\\\%\") + \"%\"") + ");");
+				this.tt.PopIndent ();
+			}
+			this.tt.CloseScope ();
+		}
+
+
+		private void GenerateAddEndsWithMethods ()
+		{
+			this.GenerateAddEndsWithMethods (false);
+			this.tt.WriteMethodsSeparator ();
+			this.GenerateAddEndsWithMethods (true);
+		}
+
+
+		private void GenerateAddEndsWithMethods (bool not)
+		{
+			var comment_operand = !not ? "like" : "not like";
+			var method_name = !not ? "AddEndsWith" : "AddNotEndsWith";
+			var add_method_name = !not ? "AddLike" : "AddNotLike";
+
+			this.tt.WriteLine ("/// <summary>");
+			this.tt.WriteLine ("///     Adds \"<paramref name=\"columnName\" /> {0} <paramref name=\"parameterName\" />", comment_operand);
+			this.tt.WriteLine ("///     expression to the clause. The <paramref name=\"value\"/> parameter is escaped");
+			this.tt.WriteLine ("///     and prepended with the '%' sign.");
+			this.tt.WriteLine ("///     If <paramref name=\"value\"/> is null or empty string then nothing will be added.");
+			this.tt.WriteLine ("/// </summary>");
+			this.tt.WriteLine ("[MethodImpl (MethodImplOptions.AggressiveInlining)]");
+
+			this.tt.WriteAndPushIndent ("public static SqlClause {0} (", method_name);
+			{
+				this.tt.WriteLine ("this SqlClause sqlClause,");
+				this.tt.WriteLine ("[NotNull] string columnName,");
+				this.tt.WriteLine ("[NotNull] string parameterName,");
+				this.tt.WriteLine ("[CanBeNull] string value)");
+			}
+			this.tt.PopIndent ();
+
+			this.tt.OpenScope ();
+			{
+				this.tt.WriteLine ("if (string.IsNullOrEmpty (value))");
+				this.tt.WriteLine ("    return sqlClause;");
+
+				this.tt.WriteLine (string.Empty);
+
+				this.tt.WriteAndPushIndent ("return sqlClause.{0} (columnName, ", add_method_name);
+				this.tt.WriteLine (this.configuration.GetCreateDbParameterCode ("parameterName", "\"%\" + value.Replace (\"%\", \"\\\\%\")") + ");");
+				this.tt.PopIndent ();
+			}
+			this.tt.CloseScope ();
 		}
 
 		#endregion

@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Rocks.Sql.Tests\Rocks.Sql.Tests.csproj">
-      <Project>{9AE7B3F4-D789-4F4D-8B35-88641F194F94}</Project>
-      <Name>Rocks.Sql.Tests</Name>
+    <ProjectReference Include="..\Rocks.Sql.MsSql.Tests\Rocks.Sql.MsSql.Tests.csproj">
+      <Project>{62290F1A-6A70-4FBE-ADCF-F519EFD9DC2D}</Project>
+      <Name>Rocks.Sql.MsSql.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

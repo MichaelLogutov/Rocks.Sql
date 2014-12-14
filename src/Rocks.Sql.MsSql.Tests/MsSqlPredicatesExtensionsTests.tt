@@ -12,8 +12,10 @@
 		manager.StartNewFile (class_name + ".cs");
 
 		this.WriteLine ("using System;");
+		this.WriteLine ("using System.Collections.Generic;");
 		this.WriteLine ("using System.Data;");
 		this.WriteLine ("using System.Data.SqlClient;");
+		this.WriteLine ("using System.Linq;");
 		this.WriteLine ("using FluentAssertions;");
 		this.WriteLine ("using Microsoft.VisualStudio.TestTools.UnitTesting;");
 		this.WriteLine ("using Ploeh.AutoFixture;");

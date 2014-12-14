@@ -41,6 +41,10 @@
     <Reference Include="FluentAssertions.Core">
       <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
+    <Reference Include="NCrunch.Framework, Version=2.8.0.34, Culture=neutral, PublicKeyToken=01d101bf6f3e0aea, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NCrunch.Framework.2.8.0.34\lib\portable-windows8+net45\NCrunch.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="Ploeh.AutoFixture">
       <HintPath>..\packages\AutoFixture.3.21.1\lib\net40\Ploeh.AutoFixture.dll</HintPath>
     </Reference>
@@ -69,10 +73,10 @@
     <Compile Include="MsSqlPredicatesByteExtensionsTests.cs">
       <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
     </Compile>
-    <Compile Include="MsSqlPredicatesDatetimeExtensionsTests.cs">
+    <Compile Include="MsSqlPredicatesDateTimeExtensionsTests.cs">
       <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
     </Compile>
-    <Compile Include="MsSqlPredicatesDatetimeoffsetExtensionsTests.cs">
+    <Compile Include="MsSqlPredicatesDateTimeOffsetExtensionsTests.cs">
       <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
     </Compile>
     <Compile Include="MsSqlPredicatesDecimalExtensionsTests.cs">
@@ -96,10 +100,11 @@
     <Compile Include="MsSqlPredicatesStringExtensionsTests.cs">
       <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
     </Compile>
-    <Compile Include="MsSqlPredicatesTimespanExtensionsTests.cs">
+    <Compile Include="MsSqlPredicatesTimeSpanExtensionsTests.cs">
       <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectUseCaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MsSqlPredicatesExtensionsTests.tt">
@@ -115,6 +120,10 @@
     <ProjectReference Include="..\Rocks.Sql.MsSql\Rocks.Sql.MsSql.csproj">
       <Project>{d0164f58-841b-404b-9e85-f36f68e4c7cb}</Project>
       <Name>Rocks.Sql.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Rocks.Sql.Tests\Rocks.Sql.Tests.csproj">
+      <Project>{9ae7b3f4-d789-4f4d-8b35-88641f194f94}</Project>
+      <Name>Rocks.Sql.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Rocks.Sql\Rocks.Sql.csproj">
       <Project>{32A96C64-FE5B-4FEC-8E14-510F9B7AF594}</Project>

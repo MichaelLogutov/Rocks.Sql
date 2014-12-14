@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ploeh.AutoFixture;
@@ -11,7 +13,7 @@ using Ploeh.AutoFixture;
 namespace Rocks.Sql.MsSql.Tests
 {
     [TestClass]
-    public class MsSqlPredicatesTimespanExtensionsTests
+    public class MsSqlPredicatesTimeSpanExtensionsTests
     {
         [TestMethod]
         public void AddEquals_ByDefault_AddsCorrectPredicate ()
@@ -108,6 +110,212 @@ namespace Rocks.Sql.MsSql.Tests
             // assert
             sql.Should ().Be (string.Empty);
             parameters.Should ().BeEmpty ();
+        }
+
+
+        [TestMethod]
+        public void AddIn_TwoParameters_AddsCorrectPredicate ()
+        {
+            // arrange
+            var sut = new SqlClause ();
+            var fixture = new FixtureBuilder ().Build ();
+            var value1 = fixture.Create<TimeSpan> ();
+            var value2 = fixture.Create<TimeSpan> ();
+
+
+            // act
+            sut.AddIn ("Id", "@x", value1, value2);
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().Be ("Id in (@x1, @x2)");
+            parameters.ShouldAllBeEquivalentTo (new[]
+                                                {
+                                                    new SqlParameter
+                                                    {
+                                                        ParameterName = "@x1",
+                                                        SqlDbType = SqlDbType.Time,
+                                                        Value = value1
+                                                    },
+                                                    new SqlParameter
+                                                    {
+                                                        ParameterName = "@x2",
+                                                        SqlDbType = SqlDbType.Time,
+                                                        Value = value2
+                                                    }
+                                                });
+        }
+
+
+        [TestMethod]
+        public void AddIn_NoParameters_AddsNothing ()
+        {
+            // arrange
+            var sut = new SqlClause ();
+
+
+            // act
+            sut.AddIn ("Id", "@x", new TimeSpan[0]);
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().Be (string.Empty);
+            parameters.Should ().BeEmpty ();
+        }
+
+
+        [TestMethod]
+        public void AddIn_Null_AddsNothing ()
+        {
+            // arrange
+            var sut = new SqlClause ();
+
+
+            // act
+            sut.AddIn ("Id", "@x", (IEnumerable<TimeSpan>) null);
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().Be (string.Empty);
+            parameters.Should ().BeEmpty ();
+        }
+
+
+        [TestMethod]
+        public void AddIn_OneParameter_AddsCorrectPredicate ()
+        {
+            // arrange
+            var sut = new SqlClause ();
+            var fixture = new FixtureBuilder ().Build ();
+            var value = fixture.Create<TimeSpan> ();
+
+
+            // act
+            sut.AddIn ("Id", "@x", new[] { value }.Select (x => x));
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().Be ("Id in (@x1)");
+            parameters.ShouldAllBeEquivalentTo (new[]
+                                                {
+                                                    new SqlParameter
+                                                    {
+                                                        ParameterName = "@x1",
+                                                        SqlDbType = SqlDbType.Time,
+                                                        Value = value
+                                                    }
+                                                });
+        }
+
+
+        [TestMethod]
+        public void AddNotIn_TwoParameters_AddsCorrectPredicate ()
+        {
+            // arrange
+            var sut = new SqlClause ();
+            var fixture = new FixtureBuilder ().Build ();
+            var value1 = fixture.Create<TimeSpan> ();
+            var value2 = fixture.Create<TimeSpan> ();
+
+
+            // act
+            sut.AddNotIn ("Id", "@x", value1, value2);
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().Be ("Id not in (@x1, @x2)");
+            parameters.ShouldAllBeEquivalentTo (new[]
+                                                {
+                                                    new SqlParameter
+                                                    {
+                                                        ParameterName = "@x1",
+                                                        SqlDbType = SqlDbType.Time,
+                                                        Value = value1
+                                                    },
+                                                    new SqlParameter
+                                                    {
+                                                        ParameterName = "@x2",
+                                                        SqlDbType = SqlDbType.Time,
+                                                        Value = value2
+                                                    }
+                                                });
+        }
+
+
+        [TestMethod]
+        public void AddNotIn_NoParameters_AddsNothing ()
+        {
+            // arrange
+            var sut = new SqlClause ();
+
+
+            // act
+            sut.AddNotIn ("Id", "@x", new TimeSpan[0]);
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().Be (string.Empty);
+            parameters.Should ().BeEmpty ();
+        }
+
+
+        [TestMethod]
+        public void AddNotIn_Null_AddsNothing ()
+        {
+            // arrange
+            var sut = new SqlClause ();
+
+
+            // act
+            sut.AddNotIn ("Id", "@x", (IEnumerable<TimeSpan>) null);
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().Be (string.Empty);
+            parameters.Should ().BeEmpty ();
+        }
+
+
+        [TestMethod]
+        public void AddNotIn_OneParameter_AddsCorrectPredicate ()
+        {
+            // arrange
+            var sut = new SqlClause ();
+            var fixture = new FixtureBuilder ().Build ();
+            var value = fixture.Create<TimeSpan> ();
+
+
+            // act
+            sut.AddNotIn ("Id", "@x", new[] { value }.Select (x => x));
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().Be ("Id not in (@x1)");
+            parameters.ShouldAllBeEquivalentTo (new[]
+                                                {
+                                                    new SqlParameter
+                                                    {
+                                                        ParameterName = "@x1",
+                                                        SqlDbType = SqlDbType.Time,
+                                                        Value = value
+                                                    }
+                                                });
         }
 
 
