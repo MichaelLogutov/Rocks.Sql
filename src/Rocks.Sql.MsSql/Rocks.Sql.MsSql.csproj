@@ -39,9 +39,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MsSqlPredicatesExtensions.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Compile Include="MsSqlPredicatesBoolExtensions.cs">
+      <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesByteExtensions.cs">
+      <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesDatetimeExtensions.cs">
+      <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesDatetimeoffsetExtensions.cs">
+      <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesDecimalExtensions.cs">
+      <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesDoubleExtensions.cs">
+      <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesGuidExtensions.cs">
+      <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesIntExtensions.cs">
+      <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesLongExtensions.cs">
+      <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesShortExtensions.cs">
+      <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesStringExtensions.cs">
+      <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesTimespanExtensions.cs">
       <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,11 +89,18 @@
     </None>
     <None Include="MsSqlPredicatesExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MsSqlPredicatesExtensions.cs</LastGenOutput>
+      <LastGenOutput>MsSqlPredicatesExtensions.txt</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MsSqlPredicatesExtensions.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MsSqlPredicatesExtensions.tt</DependentUpon>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

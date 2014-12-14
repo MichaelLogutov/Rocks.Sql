@@ -1,23 +1,25 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Ploeh.AutoFixture;
 
 // ReSharper disable ExpressionIsAlwaysNull
 // ReSharper disable SuggestVarOrType_BuiltInTypes
 
 namespace Rocks.Sql.MsSql.Tests
 {
-	[TestClass]
-	public class MsSqlPredicatesExtensionsTests
-	{
+    [TestClass]
+    public class MsSqlPredicatesStringExtensionsTests
+    {
         [TestMethod]
-        public void Int_AddEquals_ByDefault_AddsCorrectPredicate ()
+        public void AddEquals_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
             var sut = new SqlClause ();
-            int value = 1;
+            var fixture = new FixtureBuilder ().Build ();
+            var value = fixture.Create<string> ();
 
 
             // act
@@ -33,7 +35,7 @@ namespace Rocks.Sql.MsSql.Tests
                                                     new SqlParameter
                                                     {
                                                         ParameterName = "@x",
-                                                        SqlDbType = SqlDbType.Int,
+                                                        SqlDbType = SqlDbType.VarChar,
                                                         Value = value
                                                     }
                                                 });
@@ -41,11 +43,11 @@ namespace Rocks.Sql.MsSql.Tests
 
 
         [TestMethod]
-        public void Int_AddEquals_Null_AddsNothing ()
+        public void AddEquals_Null_AddsNothing ()
         {
             // arrange
             var sut = new SqlClause ();
-            int? value = null;
+            string value = null;
 
 
             // act
@@ -61,11 +63,12 @@ namespace Rocks.Sql.MsSql.Tests
 
 
         [TestMethod]
-        public void Int_AddNotEquals_ByDefault_AddsCorrectPredicate ()
+        public void AddNotEquals_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
             var sut = new SqlClause ();
-            int value = 1;
+            var fixture = new FixtureBuilder ().Build ();
+            var value = fixture.Create<string> ();
 
 
             // act
@@ -81,7 +84,7 @@ namespace Rocks.Sql.MsSql.Tests
                                                     new SqlParameter
                                                     {
                                                         ParameterName = "@x",
-                                                        SqlDbType = SqlDbType.Int,
+                                                        SqlDbType = SqlDbType.VarChar,
                                                         Value = value
                                                     }
                                                 });
@@ -89,11 +92,11 @@ namespace Rocks.Sql.MsSql.Tests
 
 
         [TestMethod]
-        public void Int_AddNotEquals_Null_AddsNothing ()
+        public void AddNotEquals_Null_AddsNothing ()
         {
             // arrange
             var sut = new SqlClause ();
-            int? value = null;
+            string value = null;
 
 
             // act
@@ -109,27 +112,28 @@ namespace Rocks.Sql.MsSql.Tests
 
 
         [TestMethod]
-        public void Int_AddGreater_ByDefault_AddsCorrectPredicate ()
+        public void AddLike_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
             var sut = new SqlClause ();
-            int value = 1;
+            var fixture = new FixtureBuilder ().Build ();
+            var value = fixture.Create<string> ();
 
 
             // act
-            sut.AddGreater ("Id", "@x", value);
+            sut.AddLike ("Id", "@x", value);
             var sql = sut.GetSql ();
             var parameters = sut.GetParameters ();
 
 
             // assert
-            sql.Should ().Be ("Id > @x");
+            sql.Should ().Be ("Id like @x");
             parameters.ShouldAllBeEquivalentTo (new[]
                                                 {
                                                     new SqlParameter
                                                     {
                                                         ParameterName = "@x",
-                                                        SqlDbType = SqlDbType.Int,
+                                                        SqlDbType = SqlDbType.VarChar,
                                                         Value = value
                                                     }
                                                 });
@@ -137,15 +141,15 @@ namespace Rocks.Sql.MsSql.Tests
 
 
         [TestMethod]
-        public void Int_AddGreater_Null_AddsNothing ()
+        public void AddLike_Null_AddsNothing ()
         {
             // arrange
             var sut = new SqlClause ();
-            int? value = null;
+            string value = null;
 
 
             // act
-            sut.AddGreater ("Id", "@x", value);
+            sut.AddLike ("Id", "@x", value);
             var sql = sut.GetSql ();
             var parameters = sut.GetParameters ();
 
@@ -157,27 +161,28 @@ namespace Rocks.Sql.MsSql.Tests
 
 
         [TestMethod]
-        public void Int_AddGreaterOrEquals_ByDefault_AddsCorrectPredicate ()
+        public void AddNotLike_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
             var sut = new SqlClause ();
-            int value = 1;
+            var fixture = new FixtureBuilder ().Build ();
+            var value = fixture.Create<string> ();
 
 
             // act
-            sut.AddGreaterOrEquals ("Id", "@x", value);
+            sut.AddNotLike ("Id", "@x", value);
             var sql = sut.GetSql ();
             var parameters = sut.GetParameters ();
 
 
             // assert
-            sql.Should ().Be ("Id >= @x");
+            sql.Should ().Be ("Id not like @x");
             parameters.ShouldAllBeEquivalentTo (new[]
                                                 {
                                                     new SqlParameter
                                                     {
                                                         ParameterName = "@x",
-                                                        SqlDbType = SqlDbType.Int,
+                                                        SqlDbType = SqlDbType.VarChar,
                                                         Value = value
                                                     }
                                                 });
@@ -185,15 +190,15 @@ namespace Rocks.Sql.MsSql.Tests
 
 
         [TestMethod]
-        public void Int_AddGreaterOrEquals_Null_AddsNothing ()
+        public void AddNotLike_Null_AddsNothing ()
         {
             // arrange
             var sut = new SqlClause ();
-            int? value = null;
+            string value = null;
 
 
             // act
-            sut.AddGreaterOrEquals ("Id", "@x", value);
+            sut.AddNotLike ("Id", "@x", value);
             var sql = sut.GetSql ();
             var parameters = sut.GetParameters ();
 
@@ -202,101 +207,5 @@ namespace Rocks.Sql.MsSql.Tests
             sql.Should ().Be (string.Empty);
             parameters.Should ().BeEmpty ();
         }
-
-
-        [TestMethod]
-        public void Int_AddLess_ByDefault_AddsCorrectPredicate ()
-        {
-            // arrange
-            var sut = new SqlClause ();
-            int value = 1;
-
-
-            // act
-            sut.AddLess ("Id", "@x", value);
-            var sql = sut.GetSql ();
-            var parameters = sut.GetParameters ();
-
-
-            // assert
-            sql.Should ().Be ("Id < @x");
-            parameters.ShouldAllBeEquivalentTo (new[]
-                                                {
-                                                    new SqlParameter
-                                                    {
-                                                        ParameterName = "@x",
-                                                        SqlDbType = SqlDbType.Int,
-                                                        Value = value
-                                                    }
-                                                });
-        }
-
-
-        [TestMethod]
-        public void Int_AddLess_Null_AddsNothing ()
-        {
-            // arrange
-            var sut = new SqlClause ();
-            int? value = null;
-
-
-            // act
-            sut.AddLess ("Id", "@x", value);
-            var sql = sut.GetSql ();
-            var parameters = sut.GetParameters ();
-
-
-            // assert
-            sql.Should ().Be (string.Empty);
-            parameters.Should ().BeEmpty ();
-        }
-
-
-        [TestMethod]
-        public void Int_AddLessOrEquals_ByDefault_AddsCorrectPredicate ()
-        {
-            // arrange
-            var sut = new SqlClause ();
-            int value = 1;
-
-
-            // act
-            sut.AddLessOrEquals ("Id", "@x", value);
-            var sql = sut.GetSql ();
-            var parameters = sut.GetParameters ();
-
-
-            // assert
-            sql.Should ().Be ("Id <= @x");
-            parameters.ShouldAllBeEquivalentTo (new[]
-                                                {
-                                                    new SqlParameter
-                                                    {
-                                                        ParameterName = "@x",
-                                                        SqlDbType = SqlDbType.Int,
-                                                        Value = value
-                                                    }
-                                                });
-        }
-
-
-        [TestMethod]
-        public void Int_AddLessOrEquals_Null_AddsNothing ()
-        {
-            // arrange
-            var sut = new SqlClause ();
-            int? value = null;
-
-
-            // act
-            sut.AddLessOrEquals ("Id", "@x", value);
-            var sql = sut.GetSql ();
-            var parameters = sut.GetParameters ();
-
-
-            // assert
-            sql.Should ().Be (string.Empty);
-            parameters.Should ().BeEmpty ();
-        }
-	}
+    }
 }

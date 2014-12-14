@@ -3,7 +3,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.TextTemplating;
 
-namespace Rocks.Sql.Generators
+namespace Rocks.Sql.CodeGeneration
 {
 	/// <summary>
 	/// Extensions for <see cref="TextTransformation"/> class.
@@ -50,6 +50,35 @@ namespace Rocks.Sql.Generators
 		{
 			tt.WriteLine (string.Empty);
 			tt.WriteLine (string.Empty);
+		}
+
+
+		/// <summary>
+		///     Pushes the default indent.
+		/// </summary>
+		public static void PushIndent ([NotNull] this TextTransformation tt)
+		{
+			tt.PushIndent ("    ");
+		}
+
+
+		/// <summary>
+		///     Opens new scope by writing the <paramref name="code" /> and pushing the default indent.
+		/// </summary>
+		public static void OpenScope ([NotNull] this TextTransformation tt, string code = "{")
+		{
+			tt.WriteLine (code);
+			tt.PushIndent ();
+		}
+
+
+		/// <summary>
+		///     Closes new scope by poping the indent and writing the <paramref name="code" />.
+		/// </summary>
+		public static void CloseScope ([NotNull] this TextTransformation tt, string code = "}")
+		{
+			tt.PopIndent ();
+			tt.WriteLine (code);
 		}
 	}
 }

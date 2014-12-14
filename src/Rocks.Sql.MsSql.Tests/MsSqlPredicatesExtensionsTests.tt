@@ -1,21 +1,38 @@
-﻿<#@ include file="$(SolutionDir)Rocks.Sql.Tests\Generators\PredicateGeneratorTests.ttinclude" once="true" #>
+﻿<#@ include file="$(SolutionDir)Rocks.Sql.CodeGeneration\PredicateGenerator.ttinclude" once="true" #>
 <#@ include file="$(SolutionDir)Rocks.Sql.MsSql\MsSqlPredicateGeneratorConfiguration.ttinclude" once="true" #>
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
-using System;
-using System.Data;
-using System.Data.SqlClient;
-using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+<#
+	var manager = new FileManager (this.Host, this.GenerationEnvironment);
 
-// ReSharper disable ExpressionIsAlwaysNull
-// ReSharper disable SuggestVarOrType_BuiltInTypes
-
-namespace Rocks.Sql.MsSql.Tests
-{
-	[TestClass]
-	public class MsSqlPredicatesExtensionsTests
+	foreach (var configuration in GetAllSupportedConfigurations ())
 	{
-<# new PredicateTestsGenerator (this, new MsSqlPredicateGeneratorConfiguration ()).Generate (); #>
+		var class_name = string.Format ("MsSqlPredicates{0}ExtensionsTests", configuration.Type.CapitalizeInvariant ());
+
+		manager.StartNewFile (class_name + ".cs");
+
+		this.WriteLine ("using System;");
+		this.WriteLine ("using System.Data;");
+		this.WriteLine ("using System.Data.SqlClient;");
+		this.WriteLine ("using FluentAssertions;");
+		this.WriteLine ("using Microsoft.VisualStudio.TestTools.UnitTesting;");
+		this.WriteLine ("using Ploeh.AutoFixture;");
+		
+		this.WriteLine ();
+		this.WriteLine ("// ReSharper disable ExpressionIsAlwaysNull");
+		this.WriteLine ("// ReSharper disable SuggestVarOrType_BuiltInTypes");
+
+		this.WriteLine ();
+		this.WriteLine ("namespace Rocks.Sql.MsSql.Tests");
+		this.OpenScope ();
+		this.WriteLine ("[TestClass]");
+		this.WriteLine ("public class {0}", class_name);
+		this.OpenScope ();
+		new PredicateTestsGenerator (this, configuration).Generate ();
+		this.CloseScope ();
+		this.CloseScope ();
+
+		manager.EndFile ();
 	}
-}
+
+	manager.WriteAllFiles (); #>

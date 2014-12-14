@@ -1,39 +1,61 @@
-﻿<#@ include file="$(SolutionDir)Rocks.Sql\Generators\PredicateGenerator.ttinclude" once="true" #>
+﻿<#@ include file="$(SolutionDir)Rocks.Sql.CodeGeneration\PredicateGenerator.ttinclude" once="true" #>
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #><#+
 
 
+	public IList<MsSqlPredicateGeneratorConfiguration> GetAllSupportedConfigurations ()
+	{
+		return new[]
+		       {
+			       new MsSqlPredicateGeneratorConfiguration ("string", "VarChar")
+			       {
+				       IsNullable = false,
+				       GenerateEqualsMethods = true,
+				       GenerateGreaterOrLessMethods = false,
+				       GenerateLikeMethods = true
+			       },
+			       new MsSqlPredicateGeneratorConfiguration ("bool", "Bit"),
+			       new MsSqlPredicateGeneratorConfiguration ("byte", "TinyInt"),
+			       new MsSqlPredicateGeneratorConfiguration ("short", "SmallInt"),
+			       new MsSqlPredicateGeneratorConfiguration ("int", "Int"),
+			       new MsSqlPredicateGeneratorConfiguration ("long", "BigInt"),
+			       new MsSqlPredicateGeneratorConfiguration ("double", "Float"),
+			       new MsSqlPredicateGeneratorConfiguration ("decimal", "Decimal"),
+			       new MsSqlPredicateGeneratorConfiguration ("DateTime", "DateTime"),
+			       new MsSqlPredicateGeneratorConfiguration ("DateTimeOffset", "DateTimeOffset"),
+			       new MsSqlPredicateGeneratorConfiguration ("TimeSpan", "Time"),
+			       new MsSqlPredicateGeneratorConfiguration ("Guid", "UniqueIdentifier")
+		       };
+	}
+
+
 	public class MsSqlPredicateGeneratorConfiguration : PredicateGeneratorConfiguration
 	{
-		/// <summary>
-		///     Returns a list of types of values for methods that will be generated.
-		/// </summary>
-		public override IList<string> SupportedTypes { get { return new[] { "int" }; } }
+		private readonly string dbType;
+
+
+		public MsSqlPredicateGeneratorConfiguration (string type, string dbType) : base (type)
+		{
+			this.dbType = dbType;
+			this.GenerateLikeMethods = false;
+		}
 
 
 		/// <summary>
 		///     Generates a code for creation of <see cref="IDbDataParameter" /> from
 		///     given name and value parameters.
 		/// </summary>
-		public override string GetCreateDbParameterCode (string type, string nameParameterName, string valueParameterName)
+		public override string GetCreateDbParameterCode (string nameParameterName, string valueParameterName)
 		{
-			switch (type)
-			{
-				case "int":
-				{
-					return string.Format ("new SqlParameter\r\n" +
-					                      "{{\r\n" +
-					                      "    ParameterName = {0},\r\n" +
-					                      "    SqlDbType = SqlDbType.Int,\r\n" +
-					                      "    Value = {1}\r\n" +
-					                      "}}",
-					                      nameParameterName,
-					                      valueParameterName);
-				}
-
-				default:
-					throw new NotSupportedException ("type: " + type);
-			}
+			return string.Format ("new SqlParameter\r\n" +
+			                      "{{\r\n" +
+			                      "    ParameterName = {0},\r\n" +
+			                      "    SqlDbType = SqlDbType.{1},\r\n" +
+			                      "    Value = {2}\r\n" +
+			                      "}}",
+			                      nameParameterName,
+			                      this.dbType,
+			                      valueParameterName);
 		}
 	}
 

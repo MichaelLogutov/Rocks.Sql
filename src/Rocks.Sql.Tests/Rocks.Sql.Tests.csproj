@@ -83,9 +83,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Generators\PredicateGeneratorTests.ttinclude">
-      <LastGenOutput>PredicateGenerator1.txt</LastGenOutput>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>

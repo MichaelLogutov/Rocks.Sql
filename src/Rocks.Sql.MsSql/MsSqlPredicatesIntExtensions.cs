@@ -1,12 +1,13 @@
-﻿using System.Data;
+using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace Rocks.Sql.MsSql
 {
-	public static class MsSqlPredicatesExtensions
-	{
+    public static class MsSqlPredicatesIntExtensions
+    {
         /// <summary>
         ///     Adds "<paramref name="columnName" /> = <paramref name="parameterName" />
         ///     expression to the clause.
@@ -143,5 +144,99 @@ namespace Rocks.Sql.MsSql
                                                               Value = value
                                                           });
         }
-	}
+
+
+        /// <summary>
+        ///     <para>
+        ///         Adds "<paramref name="columnName" /> between <paramref name="parameterName" />
+        ///         and <paramref name="parameterName2" />" expression to the clause.
+        ///     </para>
+        ///     <para>
+        ///         If <paramref name="value2" /> is null then adds "<paramref name="columnName" /> &gt;=
+        ///         <paramref name="parameterName" />" expression to the clause.
+        ///     </para>
+        ///		<para>
+        ///         If <paramref name="value" /> is null then adds "<paramref name="columnName" /> &lt;=
+        ///         <paramref name="parameterName2" />" expression to the clause.
+        ///     </para>
+        ///     <para>
+        ///         If both <paramref name="value" /> and <paramref name="value2" /> are null
+        ///         then nothing will be added.
+        ///     </para>
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public static SqlClause AddBetween (this SqlClause sqlClause,
+                                            [NotNull] string columnName,
+                                            [NotNull] string parameterName,
+                                            int? value,
+                                            [NotNull] string parameterName2,
+                                            int? value2)
+        {
+            if (value == null && value2 == null)
+                return sqlClause;
+
+            var parameter = value == null ? null : new SqlParameter
+                                                   {
+                                                       ParameterName = parameterName,
+                                                       SqlDbType = SqlDbType.Int,
+                                                       Value = value
+                                                   };
+
+            var parameter2 = value2 == null ? null : new SqlParameter
+                                                     {
+                                                         ParameterName = parameterName2,
+                                                         SqlDbType = SqlDbType.Int,
+                                                         Value = value2
+                                                     };
+
+            return sqlClause.AddBetween (columnName, parameter, parameter2);
+        }
+
+
+        /// <summary>
+        ///     <para>
+        ///         Adds "<paramref name="columnName" /> not between <paramref name="parameterName" />
+        ///         and <paramref name="parameterName2" />" expression to the clause.
+        ///     </para>
+        ///     <para>
+        ///         If <paramref name="value2" /> is null then adds "<paramref name="columnName" /> &lt;
+        ///         <paramref name="parameterName" />" expression to the clause.
+        ///     </para>
+        ///		<para>
+        ///         If <paramref name="value" /> is null then adds "<paramref name="columnName" /> &gt;
+        ///         <paramref name="parameterName2" />" expression to the clause.
+        ///     </para>
+        ///     <para>
+        ///         If both <paramref name="value" /> and <paramref name="value2" /> are null
+        ///         then nothing will be added.
+        ///     </para>
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public static SqlClause AddNotBetween (this SqlClause sqlClause,
+                                               [NotNull] string columnName,
+                                               [NotNull] string parameterName,
+                                               int? value,
+                                               [NotNull] string parameterName2,
+                                               int? value2)
+        {
+            if (value == null && value2 == null)
+                return sqlClause;
+
+            var parameter = value == null ? null : new SqlParameter
+                                                   {
+                                                       ParameterName = parameterName,
+                                                       SqlDbType = SqlDbType.Int,
+                                                       Value = value
+                                                   };
+
+            var parameter2 = value2 == null ? null : new SqlParameter
+                                                     {
+                                                         ParameterName = parameterName2,
+                                                         SqlDbType = SqlDbType.Int,
+                                                         Value = value2
+                                                     };
+
+            return sqlClause.AddNotBetween (columnName, parameter, parameter2);
+        }
+    }
 }

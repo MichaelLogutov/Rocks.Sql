@@ -306,7 +306,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 		[TestMethod]
-		public void AddBetween_TheFirstParameterIsNull_AddsNothing ()
+		public void AddBetween_TheFirstParameterIsNull_AddsCorrectPredicate ()
 		{
 			// arrange
 			var sut = new SqlClause ();
@@ -326,7 +326,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 		[TestMethod]
-		public void AddBetween_TheSecondParameterIsNull_AddsNothing ()
+		public void AddBetween_TheSecondParameterIsNull_AddsCorrectPredicate ()
 		{
 			// arrange
 			var sut = new SqlClause ();

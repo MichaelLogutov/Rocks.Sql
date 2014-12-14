@@ -41,6 +41,9 @@
     <Reference Include="FluentAssertions.Core">
       <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Ploeh.AutoFixture">
+      <HintPath>..\packages\AutoFixture.3.21.1\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -59,17 +62,49 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="MsSqlPredicatesExtensionsTests.cs">
+    <Compile Include="FixtureBuilder.cs" />
+    <Compile Include="MsSqlPredicatesBoolExtensionsTests.cs">
       <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="MsSqlPredicatesByteExtensionsTests.cs">
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesDatetimeExtensionsTests.cs">
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesDatetimeoffsetExtensionsTests.cs">
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesDecimalExtensionsTests.cs">
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesDoubleExtensionsTests.cs">
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesGuidExtensionsTests.cs">
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesIntExtensionsTests.cs">
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesLongExtensionsTests.cs">
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesShortExtensionsTests.cs">
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesStringExtensionsTests.cs">
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MsSqlPredicatesTimespanExtensionsTests.cs">
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MsSqlPredicatesExtensionsTests.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MsSqlPredicatesExtensionsTests.cs</LastGenOutput>
+      <LastGenOutput>MsSqlPredicatesExtensionsTests1.txt</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -85,6 +120,13 @@
       <Project>{32A96C64-FE5B-4FEC-8E14-510F9B7AF594}</Project>
       <Name>Rocks.Sql</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MsSqlPredicatesExtensionsTests1.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MsSqlPredicatesExtensionsTests.tt</DependentUpon>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
