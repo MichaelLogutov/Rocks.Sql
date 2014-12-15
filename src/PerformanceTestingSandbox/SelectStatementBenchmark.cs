@@ -24,6 +24,7 @@ namespace PerformanceTestingSandbox
 
 			stopwatch.Stop ();
 
+
 			// report
 			Console.WriteLine ("{0:#,##0.000} ms per call", (double) stopwatch.ElapsedMilliseconds / max_tries);
 		}
