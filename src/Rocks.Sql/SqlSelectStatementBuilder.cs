@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -142,19 +141,6 @@ namespace Rocks.Sql
 		{
 			foreach (var column in columns)
 				this.Column (column);
-
-			return this;
-		}
-
-
-		/// <summary>
-		///     Changes the select clause to start with "select top(@topValueParameterName)" text.
-		///		Adds the <paramref name="topValueParameter"/> to the clause parameters list.
-		/// </summary>
-		public SqlSelectStatementBuilder Top ([NotNull] IDbDataParameter topValueParameter)
-		{
-			this.Select.Prefix = "select top(" + topValueParameter.ParameterName + ")" + Environment.NewLine;
-			this.Select.Add (topValueParameter);
 
 			return this;
 		}

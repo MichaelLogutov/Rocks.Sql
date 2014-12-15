@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.SqlClient;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NCrunch.Framework;
 using Rocks.Sql.Tests;
 
 namespace Rocks.Sql.MsSql.Tests
@@ -56,18 +55,6 @@ namespace Rocks.Sql.MsSql.Tests
 			                                    });
 		}
 
-
-		[TestMethod, Serial]
-		public void Select_IsPerformant ()
-		{
-			// arrange
-			Action action = Benchmark;
-
-
-			// act, assert
-			action.ExecutionTime ().ShouldNotExceed (30.Milliseconds ());
-		}
-
 		#endregion
 
 		#region Protected methods
@@ -95,17 +82,8 @@ namespace Rocks.Sql.MsSql.Tests
 		private static SqlClause CreateSut (Filter filter)
 		{
 			var sql = SqlBuilder.SelectFrom ("Orders as o")
-			                    .Columns ("o.Id", "o.Date");
-
-			if (filter.MaxRecords != null)
-			{
-				sql.Top (new SqlParameter
-				         {
-					         ParameterName = "@top",
-					         SqlDbType = SqlDbType.Int,
-					         Value = filter.MaxRecords
-				         });
-			}
+			                    .Columns ("o.Id", "o.Date")
+			                    .Top (filter.MaxRecords);
 
 			if (!string.IsNullOrEmpty (filter.UserName))
 			{
@@ -118,6 +96,8 @@ namespace Rocks.Sql.MsSql.Tests
 				sql.From.Add ("u", "inner join Users as u on (o.UserId = u.Id)");
 				sql.Where.AddEquals ("u.Email", "@userEmail", filter.UserEmail);
 			}
+
+			sql.Where.AddGreaterOrEquals ("o.Date", "@minDate", filter.MinDate);
 
 			sql.OrderBy.Add ("o.Date");
 
@@ -135,6 +115,7 @@ namespace Rocks.Sql.MsSql.Tests
 			public string UserName { get; set; }
 			public string UserEmail { get; set; }
 			public int? MaxRecords { get; set; }
+			public DateTime? MinDate { get; set; }
 
 			#endregion
 		}
