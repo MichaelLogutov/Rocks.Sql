@@ -366,7 +366,7 @@ namespace Rocks.Sql
 
 
         /// <summary>
-        ///     Adds "<paramref name="columnName" /> & <paramref name="parameter" />.ParameterName = <paramref name="parameter" />.ParameterName"
+        ///     Adds "<paramref name="columnName" /> &amp; <paramref name="parameter" />.ParameterName = <paramref name="parameter" />.ParameterName"
         ///     expression to the clause.
         ///		If <paramref name="parameter"/> is null then nothing will be added.
         /// </summary>
@@ -383,7 +383,7 @@ namespace Rocks.Sql
 
 
         /// <summary>
-        ///     Adds "<paramref name="columnName" /> & <paramref name="parameter" />.ParameterName &lt;&gt; <paramref name="parameter" />.ParameterName"
+        ///     Adds "<paramref name="columnName" /> &amp; <paramref name="parameter" />.ParameterName &lt;&gt; <paramref name="parameter" />.ParameterName"
         ///     expression to the clause.
         ///		If <paramref name="parameter"/> is null then nothing will be added.
         /// </summary>
@@ -400,7 +400,7 @@ namespace Rocks.Sql
 
 
         /// <summary>
-        ///     Adds "<paramref name="columnName" /> & <paramref name="parameter" />.ParameterName > 0"
+        ///     Adds "<paramref name="columnName" /> &amp; <paramref name="parameter" />.ParameterName > 0"
         ///     expression to the clause.
         ///		If <paramref name="parameter"/> is null then nothing will be added.
         /// </summary>
@@ -420,7 +420,7 @@ namespace Rocks.Sql
 
 
         /// <summary>
-        ///     Adds "<paramref name="columnName" /> & <paramref name="parameter" />.ParameterName &lt;= 0"
+        ///     Adds "<paramref name="columnName" /> &amp; <paramref name="parameter" />.ParameterName &lt;= 0"
         ///     expression to the clause.
         ///		If <paramref name="parameter"/> is null then nothing will be added.
         /// </summary>
