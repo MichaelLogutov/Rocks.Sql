@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Linq;
 using JetBrains.Annotations;
 
 namespace Rocks.Sql
@@ -69,6 +68,7 @@ namespace Rocks.Sql
 			{
 				if (this.where == null)
 					this.where = SqlClauseBuilder.Where ();
+
 				return this.where;
 			}
 		}
