@@ -4,203 +4,241 @@ using JetBrains.Annotations;
 
 namespace Rocks.Sql
 {
-	/// <summary>
-	///     Represents a builder for sql select statement.
-	/// </summary>
-	public class SqlSelectStatementBuilder
-	{
-		#region Private fields
+    /// <summary>
+    ///     Represents a builder for sql select statement.
+    /// </summary>
+    public class SqlSelectStatementBuilder
+    {
+        #region Private readonly fields
 
-		[NotNull]
-		private readonly SqlClause select;
+        [NotNull]
+        private readonly SqlClause select;
 
-		[NotNull]
-		private readonly SqlClause from;
+        [NotNull]
+        private readonly SqlClause from;
 
-		[CanBeNull]
-		private SqlClause where;
+        #endregion
 
-		[CanBeNull]
-		private SqlClause groupBy;
+        #region Private fields
 
-		[CanBeNull]
-		private SqlClause having;
+        [CanBeNull]
+        private SqlClause where;
 
-		[CanBeNull]
-		private SqlClause orderBy;
+        [CanBeNull]
+        private SqlClause groupBy;
 
-		#endregion
+        [CanBeNull]
+        private SqlClause having;
 
-		#region Construct
+        [CanBeNull]
+        private SqlClause orderBy;
 
-		/// <summary>
-		///     Initializes a new instance of the <see cref="SqlSelectStatementBuilder" /> class.
-		/// </summary>
-		public SqlSelectStatementBuilder ([NotNull] string tableName)
-		{
-			this.select = SqlClauseBuilder.Select ();
-			this.from = SqlClauseBuilder.From (tableName);
-		}
+        [CanBeNull]
+        private SqlSelectStatementBuilder cte;
 
-		#endregion
+        private string cteName;
 
-		#region Public properties
+        #endregion
 
-		/// <summary>
-		///     A "select" clause.
-		/// </summary>
-		[NotNull]
-		public SqlClause Select { get { return this.select; } }
+        #region Construct
 
-		/// <summary>
-		///     A "from" clause.
-		/// </summary>
-		[NotNull]
-		public SqlClause From { get { return this.from; } }
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="SqlSelectStatementBuilder" /> class.
+        /// </summary>
+        public SqlSelectStatementBuilder ([NotNull] string tableName)
+        {
+            this.select = SqlClauseBuilder.Select ();
+            this.from = SqlClauseBuilder.From (tableName);
+        }
 
-		/// <summary>
-		///     A "where" clause.
-		/// </summary>
-		[NotNull]
-		public SqlClause Where
-		{
-			get
-			{
-				if (this.where == null)
-					this.where = SqlClauseBuilder.Where ();
+        #endregion
 
-				return this.where;
-			}
-		}
+        #region Public properties
 
-		/// <summary>
-		///     A "group by" clause.
-		/// </summary>
-		[NotNull]
-		public SqlClause GroupBy
-		{
-			get
-			{
-				if (this.groupBy == null)
-					return this.groupBy = SqlClauseBuilder.GroupBy ();
+        /// <summary>
+        ///     A "select" clause.
+        /// </summary>
+        [NotNull]
+        public SqlClause Select
+        {
+            get { return this.select; }
+        }
 
-				return this.groupBy;
-			}
-		}
+        /// <summary>
+        ///     A "from" clause.
+        /// </summary>
+        [NotNull]
+        public SqlClause From
+        {
+            get { return this.from; }
+        }
 
-		/// <summary>
-		///     A "having" clause.
-		/// </summary>
-		[NotNull]
-		public SqlClause Having
-		{
-			get
-			{
-				if (this.having == null)
-					return this.having = SqlClauseBuilder.Having ();
+        /// <summary>
+        ///     A "where" clause.
+        /// </summary>
+        [NotNull]
+        public SqlClause Where
+        {
+            get
+            {
+                if (this.where == null)
+                    this.where = SqlClauseBuilder.Where ();
 
-				return this.having;
-			}
-		}
+                return this.where;
+            }
+        }
 
+        /// <summary>
+        ///     A "group by" clause.
+        /// </summary>
+        [NotNull]
+        public SqlClause GroupBy
+        {
+            get
+            {
+                if (this.groupBy == null)
+                    return this.groupBy = SqlClauseBuilder.GroupBy ();
 
-		/// <summary>
-		///     An "order by" clause.
-		/// </summary>
-		[NotNull]
-		public SqlClause OrderBy
-		{
-			get
-			{
-				if (this.orderBy == null)
-					return this.orderBy = SqlClauseBuilder.OrderBy ();
+                return this.groupBy;
+            }
+        }
 
-				return this.orderBy;
-			}
-		}
+        /// <summary>
+        ///     A "having" clause.
+        /// </summary>
+        [NotNull]
+        public SqlClause Having
+        {
+            get
+            {
+                if (this.having == null)
+                    return this.having = SqlClauseBuilder.Having ();
 
-		#endregion
+                return this.having;
+            }
+        }
 
-		#region Public methods
+        /// <summary>
+        ///     An "order by" clause.
+        /// </summary>
+        [NotNull]
+        public SqlClause OrderBy
+        {
+            get
+            {
+                if (this.orderBy == null)
+                    return this.orderBy = SqlClauseBuilder.OrderBy ();
 
-		/// <summary>
-		///     Adds new column to select statement.
-		///		If the same column (case sensitive) hase been already added, ignores it.
-		/// </summary>
-		public SqlSelectStatementBuilder Column (string columnName)
-		{
-			this.select.Add (columnName, columnName);
-			return this;
-		}
+                return this.orderBy;
+            }
+        }
 
+        #endregion
 
-		/// <summary>
-		///     Adds new columns to select statement.
-		///		If the same column (case sensitive) hase been already added, ignores it.
-		/// </summary>
-		public SqlSelectStatementBuilder Columns (params string[] columns)
-		{
-			foreach (var column in columns)
-				this.Column (column);
+        #region Public methods
 
-			return this;
-		}
-
-
-		/// <summary>
-		///     Changes the select clause to start with "select top(@topValueParameterName)" text.
-		///		Adds the <paramref name="topValueParameter"/> to the clause parameters list.
-		/// </summary>
-		public SqlSelectStatementBuilder Top ([NotNull] IDbDataParameter topValueParameter)
-		{
-			this.Select.Prefix = "select top(" + topValueParameter.ParameterName + ")" + Environment.NewLine;
-			this.Select.Add (topValueParameter);
-
-			return this;
-		}
+        /// <summary>
+        ///     Adds new column to select statement.
+        ///     If the same column (case sensitive) hase been already added, ignores it.
+        /// </summary>
+        public SqlSelectStatementBuilder Column (string columnName)
+        {
+            this.select.Add (columnName, columnName);
+            return this;
+        }
 
 
-		/// <summary>
-		///     Builds the sql statement based on current information.
-		/// </summary>
-		/// <returns></returns>
-		public SqlClause Build ()
-		{
-			if (this.Select.IsEmpty)
-				this.Select.Add ("*");
+        /// <summary>
+        ///     Adds new columns to select statement.
+        ///     If the same column (case sensitive) hase been already added, ignores it.
+        /// </summary>
+        public SqlSelectStatementBuilder Columns (params string[] columns)
+        {
+            foreach (var column in columns)
+                this.Column (column);
 
-			var result = new SqlClause ();
-
-			result.Add (this.Select);
-			result.Add (this.From);
-
-			if (this.where != null)
-				result.Add (this.where);
-
-			if (this.groupBy != null)
-				result.Add (this.groupBy);
-
-			if (this.having != null)
-				result.Add (this.having);
-
-			if (this.orderBy != null)
-				result.Add (this.orderBy);
-
-			return result;
-		}
+            return this;
+        }
 
 
-		/// <summary>
-		/// Returns a string that represents the current object.
-		/// </summary>
-		/// <returns>
-		/// A string that represents the current object.
-		/// </returns>
-		public override string ToString ()
-		{
-			return this.Build ().GetSql ();
-		}
+        /// <summary>
+        ///     Changes the select clause to start with "select top(@topValueParameterName)" text.
+        ///     Adds the <paramref name="topValueParameter" /> to the clause parameters list.
+        /// </summary>
+        public SqlSelectStatementBuilder Top ([NotNull] IDbDataParameter topValueParameter)
+        {
+            this.Select.Prefix = "select top(" + topValueParameter.ParameterName + ")" + Environment.NewLine;
+            this.Select.Add (topValueParameter);
 
-		#endregion
-	}
+            return this;
+        }
+
+
+        /// <summary>
+        ///     Adds CTE to the statement.
+        /// </summary>
+        public SqlSelectStatementBuilder CTE ([NotNull] SqlSelectStatementBuilder cteStatement, [NotNull] string cteName = "X")
+        {
+            if (cteStatement == null)
+                throw new ArgumentNullException ("cteStatement");
+
+            if (string.IsNullOrEmpty (cteName))
+                throw new ArgumentNullException ("cteName");
+
+            this.cte = cteStatement;
+            this.cteName = cteName;
+
+            return this;
+        }
+
+
+        /// <summary>
+        ///     Builds the sql statement based on current information.
+        /// </summary>
+        /// <returns></returns>
+        public SqlClause Build ()
+        {
+            if (this.Select.IsEmpty)
+                this.Select.Add ("*");
+
+            var result = new SqlClause ();
+
+            if (this.cte != null)
+            {
+                var cte_clause = SqlClauseBuilder.CTE (this.cteName, this.cte.Build ());
+                result.Add (cte_clause);
+            }
+
+            result.Add (this.Select);
+            result.Add (this.From);
+
+            if (this.where != null)
+                result.Add (this.where);
+
+            if (this.groupBy != null)
+                result.Add (this.groupBy);
+
+            if (this.having != null)
+                result.Add (this.having);
+
+            if (this.orderBy != null)
+                result.Add (this.orderBy);
+
+            return result;
+        }
+
+
+        /// <summary>
+        ///     Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        ///     A string that represents the current object.
+        /// </returns>
+        public override string ToString ()
+        {
+            return this.Build ().GetSql ();
+        }
+
+        #endregion
+    }
 }

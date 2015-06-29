@@ -48,5 +48,25 @@ namespace Rocks.Sql.Tests.BuildersTests
 			sql.Should ().BeEquivalentToSql ("select top(@top) Id, Name from Table");
 			parameters.Should ().Equal (parameter);
 		}
+
+
+        [TestMethod]
+		public void _CreatesCorrectStatement ()
+		{
+			// arrange
+			var sut = SqlBuilder.SelectFrom ("Table")
+                .CTE (SqlBuilder.SelectFrom ("CTE"))
+                .Build ();
+
+
+			// act
+			var sql = sut.GetSql ();
+			var parameters = sut.GetParameters ();
+
+
+			// assert
+			sql.Should ().BeEquivalentToSql (";with X as ( select * from CTE ) select * from Table");
+			parameters.Should ().BeEmpty ();
+		}
 	}
 }
