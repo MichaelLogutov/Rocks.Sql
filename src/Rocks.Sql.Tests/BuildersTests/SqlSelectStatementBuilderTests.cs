@@ -2,14 +2,13 @@
 using System.Data;
 using System.Data.SqlClient;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Rocks.Sql.Tests.BuildersTests
 {
-	[TestClass]
 	public class SqlSelectStatementBuilderTests
 	{
-		[TestMethod]
+		[Fact]
 		public void ByDefault_CreatesCorrectStatement ()
 		{
 			// arrange
@@ -27,7 +26,7 @@ namespace Rocks.Sql.Tests.BuildersTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void WithTop_CreatesCorrectStatement ()
 		{
 			// arrange
@@ -50,7 +49,7 @@ namespace Rocks.Sql.Tests.BuildersTests
 		}
 
 
-        [TestMethod]
+        [Fact]
 		public void _CreatesCorrectStatement ()
 		{
 			// arrange
@@ -70,3 +69,5 @@ namespace Rocks.Sql.Tests.BuildersTests
 		}
 	}
 }
+
+

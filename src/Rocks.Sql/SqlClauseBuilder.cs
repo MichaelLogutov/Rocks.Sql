@@ -57,6 +57,19 @@ namespace Rocks.Sql
 		}
 
 
+        /// <summary>
+		///     Creates new <see cref="SqlClause" /> to represent the sql "from" clause.
+		/// </summary>
+		[NotNull]
+		public static SqlClause Join ()
+		{
+			var sql_clause = new SqlClause ().AsStatementsClause ();
+            sql_clause.Prefix = null;
+
+			return sql_clause;
+		}
+
+
 		/// <summary>
 		///     Creates new <see cref="SqlClause" /> to represent the sql "where" clause.
 		/// </summary>

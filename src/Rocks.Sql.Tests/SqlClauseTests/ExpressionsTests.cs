@@ -1,13 +1,12 @@
 ﻿using System;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Rocks.Sql.Tests.SqlClauseTests
 {
-	[TestClass]
 	public class ExpressionsTests
 	{
-		[TestMethod]
+		[Fact]
 		public void GetSql_NoPrefix_NoSuffix_NoSeparator_NoExpressions_ByDefault_ReturnsEmptyString ()
 		{
 			// arrange
@@ -23,7 +22,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetSql_WithPrefix_WithSuffix_WithSeparator_NoExpressions_ByDefault_ReturnsEmptyString ()
 		{
 			// arrange
@@ -43,7 +42,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetSql_WithPrefix_WithSuffix_WithSeparator_NoExpressions_WithRenderIfEmpty_ReturnsEmptyString ()
 		{
 			// arrange
@@ -64,7 +63,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetSql_NoPrefix_NoSuffix_NoSeparator_TwoExpressions_ReturnsCorrectSql ()
 		{
 			// arrange
@@ -83,7 +82,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetSql_WithPrefix_NoSuffix_NoSeparator_TwoExpressions_ReturnsCorrectSql ()
 		{
 			// arrange
@@ -103,7 +102,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetSql_NoPrefix_WithSuffix_NoSeparator_TwoExpressions_ReturnsCorrectSql ()
 		{
 			// arrange
@@ -123,7 +122,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetSql_NoPrefix_NoSuffix_WithSeparator_TwoExpressions_ReturnsCorrectSql ()
 		{
 			// arrange
@@ -143,7 +142,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetSql_WithPrefix_WithSuffix_WithSeparator_TwoExpressions_ReturnsCorrectSql ()
 		{
 			// arrange
@@ -165,7 +164,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void ToString_WithPrefix_WithSuffix_WithSeparator_TwoExpressions_ReturnsCorrectSql ()
 		{
 			// arrange
@@ -187,7 +186,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void AddKeyed_NoPreviousExpressions_ReturnsCorrectSql ()
 		{
 			// arrange
@@ -205,7 +204,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void AddKeyed_WithPreviousExpressionWithTheSameKey_ByDefault_AddsNothing ()
 		{
 			// arrange
@@ -224,7 +223,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void AddKeyed_WithPreviousExpressionWithTheSameKey_WithOverwrite_OverwritesTheExpression ()
 		{
 			// arrange
@@ -243,3 +242,5 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 	}
 }
+
+

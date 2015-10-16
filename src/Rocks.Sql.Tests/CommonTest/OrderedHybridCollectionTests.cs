@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Linq;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Rocks.Sql.Tests.CommonTest
 {
-	[TestClass]
 	public class OrderedHybridCollectionTests
 	{
-		[TestMethod]
+		[Fact]
 		public void AddKeyed_TwoItemsWithDifferentKeys_AddsBothItems ()
 		{
 			// arrange
@@ -27,7 +26,7 @@ namespace Rocks.Sql.Tests.CommonTest
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void AddKeyed_TwoItemsWithTheSameKeys_ByDefault_DoesNotAddsNewItem ()
 		{
 			// arrange
@@ -44,7 +43,7 @@ namespace Rocks.Sql.Tests.CommonTest
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void AddKeyed_TwoItemsWithTheSameKeys_WithOverwrite_OverwritesOldItem ()
 		{
 			// arrange
@@ -61,7 +60,7 @@ namespace Rocks.Sql.Tests.CommonTest
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void AddSequenced_TwoItems_AddsBothItems ()
 		{
 			// arrange
@@ -78,7 +77,7 @@ namespace Rocks.Sql.Tests.CommonTest
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void AddKeyed_And_AddSequenced_AddsBothItems ()
 		{
 			// arrange
@@ -96,7 +95,7 @@ namespace Rocks.Sql.Tests.CommonTest
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetIndex_HasCorrespondingKeyedItem_ReturnsItsIndex ()
 		{
 			// arrange
@@ -112,7 +111,7 @@ namespace Rocks.Sql.Tests.CommonTest
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetIndex_NoCorrespondingKeyedItem_ReturnsNull ()
 		{
 			// arrange
@@ -128,7 +127,7 @@ namespace Rocks.Sql.Tests.CommonTest
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetIndex_NoCorrespondingKeyedItem_HasSequencedItem_ReturnsNull ()
 		{
 			// arrange
@@ -144,7 +143,7 @@ namespace Rocks.Sql.Tests.CommonTest
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetCount_OneKeyedItem_ReturnsOne ()
 		{
 			// arrange
@@ -160,7 +159,7 @@ namespace Rocks.Sql.Tests.CommonTest
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetCount_OnSequencedItem_ReturnsOne ()
 		{
 			// arrange
@@ -176,3 +175,5 @@ namespace Rocks.Sql.Tests.CommonTest
 		}
 	}
 }
+
+

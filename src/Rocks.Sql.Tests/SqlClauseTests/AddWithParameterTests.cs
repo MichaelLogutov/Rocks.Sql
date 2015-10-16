@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Data.SqlClient;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Rocks.Sql.Tests.SqlClauseTests
 {
-	[TestClass]
 	public class AddWithParameterTests
 	{
-		[TestMethod]
+		[Fact]
 		public void GetSql_ToEmptyClause_ReturnsCorrectSql ()
 		{
 			// arrange
@@ -28,7 +27,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetParameters_ToEmptyClause_ReturnsCorrectParametersList ()
 		{
 			// arrange
@@ -48,7 +47,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetSql_WithKey_HasExpressionWithTheSameKey_ByDefault_AddsNothing ()
 		{
 			// arrange
@@ -70,7 +69,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetParameters_WithKey_HasExpressionWithTheSameKey_ByDefault_AddsNothing ()
 		{
 			// arrange
@@ -92,7 +91,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetSql_WithKey_HasExpressionWithTheSameKey_WithOverwrite_OverwritesTheExpression ()
 		{
 			// arrange
@@ -114,7 +113,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetParameters_WithKey_HasParameterWithTheSameKey_WithOverwrite_OverwritesTheParameter ()
 		{
 			// arrange
@@ -136,7 +135,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetParameters_WithKey_NoParameterWithTheSameKey_WithOverwrite_AddsTheParameter ()
 		{
 			// arrange
@@ -160,3 +159,5 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 	}
 }
+
+

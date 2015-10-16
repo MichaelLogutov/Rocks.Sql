@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Data.SqlClient;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Rocks.Sql.Tests.SqlClauseTests
 {
-	[TestClass]
 	public class ParametersTests
 	{
-		[TestMethod]
+		[Fact]
 		public void GetParameters_NoParameters_ReturnsEmptyList ()
 		{
 			// arrange
@@ -24,7 +23,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetParameters_OneParameter_NoName_Throws ()
 		{
 			// arrange
@@ -43,7 +42,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void GetParameters_OneParameter_ReturnsCorrectList ()
 		{
 			// arrange
@@ -62,7 +61,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void ContainsParameters_NoParameters_ReturnsFalse ()
 		{
 			// arrange
@@ -78,7 +77,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void ContainsParameters_OneParameter_ReturnsTrue ()
 		{
 			// arrange
@@ -97,3 +96,5 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 	}
 }
+
+

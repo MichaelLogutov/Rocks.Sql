@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Data.SqlClient;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Rocks.Sql.Tests.SqlClauseTests
 {
-	[TestClass]
 	public class AddClauseTests
 	{
-		[TestMethod]
+		[Fact]
 		public void ToEmptyClause_AddingEmptyClause_ReturnsEmptyString ()
 		{
 			// arrange
@@ -27,7 +26,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void ToEmptyClause_AddingNotEmptyClause_ReturnsCorrectSql ()
 		{
 			// arrange
@@ -47,7 +46,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void ToNotEmptyClause_AddingNotEmptyClause_ReturnsCorrectSql ()
 		{
 			// arrange
@@ -68,7 +67,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void WithKey_HasExpressionWithTheSameKey_ByDefault_AddsNothing ()
 		{
 			// arrange
@@ -89,7 +88,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void WithKey_HasExpressionWithTheSameKey_WithOverwrite_OverwritesTheExpression ()
 		{
 			// arrange
@@ -110,7 +109,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void ToEmptyClause_AddingEmptyClause_ReturnsEmptyParametersList ()
 		{
 			// arrange
@@ -129,7 +128,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void ToEmptyClause_AddingNotEmptyClause_ReturnsCorrectParametersList ()
 		{
 			// arrange
@@ -152,7 +151,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void ToNotEmptyClause_AddingNotEmptyClause_ReturnsCorrectParametersList ()
 		{
 			// arrange
@@ -178,7 +177,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void HasTheParameterWithTheSameName_OverwritesIt ()
 		{
 			// arrange
@@ -204,3 +203,5 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 	}
 }
+
+

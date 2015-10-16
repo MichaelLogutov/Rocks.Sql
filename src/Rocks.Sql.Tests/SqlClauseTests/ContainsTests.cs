@@ -1,13 +1,12 @@
 ﻿using System;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Rocks.Sql.Tests.SqlClauseTests
 {
-	[TestClass]
 	public class ContainsTests
 	{
-		[TestMethod]
+		[Fact]
 		public void ContainsExpressions_NoExpressions_ReturnsFalse ()
 		{
 			// arrange
@@ -23,7 +22,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void ContainsExpressions_HasNotKeyedExpression_ReturnsFalse ()
 		{
 			// arrange
@@ -41,7 +40,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 
 
-		[TestMethod]
+		[Fact]
 		public void ContainsExpressions_OneExpression_ReturnsTrue ()
 		{
 			// arrange
@@ -59,3 +58,6 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 		}
 	}
 }
+
+
+

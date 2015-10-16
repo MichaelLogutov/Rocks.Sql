@@ -3,14 +3,13 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Rocks.Sql.Tests.SqlClauseTests
 {
-    [TestClass]
     public class SqlClausePredicatesExtensionsTests
     {
-        [TestMethod]
+        [Fact]
         public void AddPredicate_ByDefault_AddsSqlAndParameters ()
         {
             // arrange
@@ -30,7 +29,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddPredicate_Null_AddsSqlAndParameters ()
         {
             // arrange
@@ -49,7 +48,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddEquals_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -69,7 +68,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddEquals_Null_AddsNothing ()
         {
             // arrange
@@ -88,7 +87,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotEquals_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -108,7 +107,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotEquals_Null_AddsNothing ()
         {
             // arrange
@@ -127,7 +126,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddGreater_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -147,7 +146,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddGreater_Null_AddsNothing ()
         {
             // arrange
@@ -166,7 +165,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddGreaterOrEquals_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -186,7 +185,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddGreaterOrEquals_Null_AddsNothing ()
         {
             // arrange
@@ -205,7 +204,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddLess_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -225,7 +224,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddLess_Null_AddsNothing ()
         {
             // arrange
@@ -244,7 +243,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddLessOrEquals_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -264,7 +263,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddLessOrEquals_Null_AddsNothing ()
         {
             // arrange
@@ -283,7 +282,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddBetween_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -304,7 +303,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddBetween_TheFirstParameterIsNull_AddsNothing ()
         {
             // arrange
@@ -324,7 +323,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddBetween_TheSecondParameterIsNull_AddsNothing ()
         {
             // arrange
@@ -344,7 +343,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddBetween_BothParametersAreNull_AddsNothing ()
         {
             // arrange
@@ -363,7 +362,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotBetween_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -384,7 +383,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotBetween_TheFirstParameterIsNull_AddsNothing ()
         {
             // arrange
@@ -404,7 +403,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotBetween_TheSecondParameterIsNull_AddsNothing ()
         {
             // arrange
@@ -424,7 +423,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotBetween_BothParametersAreNull_AddsNothing ()
         {
             // arrange
@@ -443,7 +442,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddLike_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -463,7 +462,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddLike_Null_AddsNothing ()
         {
             // arrange
@@ -482,7 +481,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotLike_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -502,7 +501,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotLike_Null_AddsNothing ()
         {
             // arrange
@@ -521,7 +520,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddIn_TwoParameters_AddsCorrectPredicate ()
         {
             // arrange
@@ -542,7 +541,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddIn_NoParameters_AddsNothing ()
         {
             // arrange
@@ -561,7 +560,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddIn_Null_AddsNothing ()
         {
             // arrange
@@ -580,7 +579,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddIn_OneParameter_AddsCorrectPredicate ()
         {
             // arrange
@@ -600,7 +599,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotIn_TwoParameters_AddsCorrectPredicate ()
         {
             // arrange
@@ -621,7 +620,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotIn_OneParameter_AddsCorrectPredicate ()
         {
             // arrange
@@ -641,7 +640,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotIn_NoParameters_AddsNothing ()
         {
             // arrange
@@ -660,7 +659,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotIn_Null_AddsNothing ()
         {
             // arrange
@@ -679,7 +678,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddIsNull_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -698,7 +697,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddIsNotNull_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -717,7 +716,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddBitAnd_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -737,7 +736,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddBitAnd_Null_AddsNothing ()
         {
             // arrange
@@ -756,7 +755,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotBitAnd_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -776,7 +775,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotBitAnd_Null_AddsNothing ()
         {
             // arrange
@@ -794,7 +793,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
             parameters.Should ().BeEmpty ();
         }
 
-        [TestMethod]
+        [Fact]
         public void AddBitOr_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -814,7 +813,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddBitOr_Null_AddsNothing ()
         {
             // arrange
@@ -833,7 +832,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotBitOr_ByDefault_AddsCorrectPredicate ()
         {
             // arrange
@@ -853,7 +852,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
 
 
-        [TestMethod]
+        [Fact]
         public void AddNotBitOr_Null_AddsNothing ()
         {
             // arrange
@@ -872,3 +871,5 @@ namespace Rocks.Sql.Tests.SqlClauseTests
         }
     }
 }
+
+

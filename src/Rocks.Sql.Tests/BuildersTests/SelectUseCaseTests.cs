@@ -2,17 +2,16 @@
 using System.Data;
 using System.Data.SqlClient;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using NCrunch.Framework;
 
 namespace Rocks.Sql.Tests.BuildersTests
 {
-	[TestClass]
 	public class SelectUseCaseTests
 	{
 		#region Public methods
 
-		[TestMethod]
+		[Fact]
 		public void Select_ReturnsCorrectSqlAndParameters ()
 		{
 			// arrange
@@ -56,7 +55,7 @@ namespace Rocks.Sql.Tests.BuildersTests
 		}
 
 
-		[TestMethod, Serial]
+		[Fact, Serial]
 		public void Select_IsPerformant ()
 		{
 			// arrange
@@ -153,3 +152,5 @@ namespace Rocks.Sql.Tests.BuildersTests
 		#endregion
 	}
 }
+
+
