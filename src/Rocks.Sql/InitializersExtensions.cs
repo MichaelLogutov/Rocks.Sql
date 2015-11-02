@@ -53,6 +53,26 @@ namespace Rocks.Sql
 
 
         /// <summary>
+        ///     Initialize <see cref="SqlClause" /> to represent the sql clause of predicates inline list.
+        ///		The format is:
+        ///		<code>
+        ///				(expression1) <paramref name="logic"/> (expression2) <paramref name="logic"/> (expression3) ...
+        ///		</code>
+        /// </summary>
+        [NotNull]
+        public static SqlClause AsInlinePredicatesClause ([NotNull] this SqlClause sqlClause, string logic = "and")
+        {
+            sqlClause.Prefix = null;
+            sqlClause.ExpressionsPrefix = "(";
+            sqlClause.ExpressionsSeparator = ") " + logic + " (";
+            sqlClause.ExpressionsSuffix = ")";
+            sqlClause.Suffix = null;
+
+            return sqlClause;
+        }
+
+
+        /// <summary>
         ///     Initialize <see cref="SqlClause" /> to represent the sql clause of statements list.
         ///		The format is:
         ///		<code>

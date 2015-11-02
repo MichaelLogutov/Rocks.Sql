@@ -22,6 +22,9 @@ namespace Rocks.Sql
         #region Private fields
 
         [CanBeNull]
+        private SqlClause prefix;
+
+        [CanBeNull]
         private SqlClause where;
 
         [CanBeNull]
@@ -34,9 +37,7 @@ namespace Rocks.Sql
         private SqlClause orderBy;
 
         [CanBeNull]
-        private SqlSelectStatementBuilder cte;
-
-        private string cteName;
+        private SqlClause suffix;
 
         #endregion
 
@@ -54,6 +55,25 @@ namespace Rocks.Sql
         #endregion
 
         #region Public properties
+
+        /// <summary>
+        ///     A starting sql clause. This sql will be prepended to the result.
+        /// </summary>
+        [NotNull]
+        public SqlClause Prefix
+        {
+            get
+            {
+                if (this.prefix == null)
+                {
+                    this.prefix = new SqlClause ();
+                    this.prefix.ExpressionsSeparator = Environment.NewLine;
+                    this.prefix.Suffix = Environment.NewLine;
+                }
+
+                return this.prefix;
+            }
+        }
 
         /// <summary>
         ///     A "select" clause.
@@ -133,6 +153,25 @@ namespace Rocks.Sql
             }
         }
 
+        /// <summary>
+        ///     An ending sql clause. This sql will be appended to the result.
+        /// </summary>
+        [NotNull]
+        public SqlClause Suffix
+        {
+            get
+            {
+                if (this.suffix == null)
+                {
+                    this.suffix = new SqlClause ();
+                    this.suffix.ExpressionsSeparator = Environment.NewLine;
+                    this.suffix.Prefix = Environment.NewLine;
+                }
+
+                return this.suffix;
+            }
+        }
+
         #endregion
 
         #region Public methods
@@ -177,16 +216,16 @@ namespace Rocks.Sql
         /// <summary>
         ///     Adds CTE to the statement.
         /// </summary>
-        public SqlSelectStatementBuilder CTE ([NotNull] SqlSelectStatementBuilder cteStatement, [NotNull] string cteName = "X")
+        public SqlSelectStatementBuilder CTE ([NotNull] SqlSelectStatementBuilder statement, [NotNull] string name = "X")
         {
-            if (cteStatement == null)
-                throw new ArgumentNullException ("cteStatement");
+            if (statement == null)
+                throw new ArgumentNullException ("statement");
 
-            if (string.IsNullOrEmpty (cteName))
-                throw new ArgumentNullException ("cteName");
+            if (string.IsNullOrEmpty (name))
+                throw new ArgumentNullException ("name");
 
-            this.cte = cteStatement;
-            this.cteName = cteName;
+            var cte = SqlClauseBuilder.CTE (name, statement.Build ());
+            this.Prefix.Add (cte);
 
             return this;
         }
@@ -203,11 +242,8 @@ namespace Rocks.Sql
 
             var result = new SqlClause ();
 
-            if (this.cte != null)
-            {
-                var cte_clause = SqlClauseBuilder.CTE (this.cteName, this.cte.Build ());
-                result.Add (cte_clause);
-            }
+            if (this.prefix != null)
+                result.Add (this.prefix);
 
             result.Add (this.Select);
             result.Add (this.From);
@@ -223,6 +259,9 @@ namespace Rocks.Sql
 
             if (this.orderBy != null)
                 result.Add (this.orderBy);
+
+            if (this.suffix != null)
+                result.Add (this.suffix);
 
             return result;
         }

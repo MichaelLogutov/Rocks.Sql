@@ -55,6 +55,7 @@
     <Compile Include="SqlBuilder.cs" />
     <Compile Include="SqlClauseBuilder.cs" />
     <Compile Include="SqlClause.cs" />
+    <Compile Include="SqlClauseExtensions.cs" />
     <Compile Include="SqlSelectStatementBuilder.cs" />
     <Compile Include="SqlClausePredicatesExtensions.cs" />
   </ItemGroup>

@@ -170,6 +170,42 @@ namespace Rocks.Sql.Tests.BuildersTests
 
 
         [Fact]
+        public void Predicate_ByDefault_InitializesAsCorrectlyFormattedSql ()
+        {
+            // arrange
+
+
+            // act
+            var result = SqlClauseBuilder.Predicate ()
+                                         .Add ("a = 1")
+                                         .Add ("b = 1")
+                                         .GetSql ();
+
+
+            // assert
+            result.Should ().Be ("(a = 1) and (b = 1)");
+        }
+
+
+        [Fact]
+        public void Predicate_WithOrLogic_InitializesAsCorrectlyFormattedSql ()
+        {
+            // arrange
+
+
+            // act
+            var result = SqlClauseBuilder.Predicate ("or")
+                                         .Add ("a = 1")
+                                         .Add ("b = 1")
+                                         .GetSql ();
+
+
+            // assert
+            result.Should ().Be ("(a = 1) or (b = 1)");
+        }
+
+
+        [Fact]
         public void GroupBy_InitializesAsCorrectlyFormattedSql ()
         {
             // arrange
