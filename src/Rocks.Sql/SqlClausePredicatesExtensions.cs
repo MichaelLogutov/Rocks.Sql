@@ -437,5 +437,41 @@ namespace Rocks.Sql
 
             return sqlClause;
         }
+
+
+        /// <summary>
+        ///     Adds "exists (<paramref name="clause" />)" expression to the clause.
+        ///		If <paramref name="clause"/> is null then nothing will be added.
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public static SqlClause AddExists (this SqlClause sqlClause, [CanBeNull] SqlClause clause)
+        {
+            if (clause == null)
+                return sqlClause;
+
+            sqlClause.Add ("exists (");
+            sqlClause.Add (clause);
+            sqlClause.Add (")");
+
+            return sqlClause;
+        }
+
+
+        /// <summary>
+        ///     Adds "exists (<paramref name="clause" />)" expression to the clause.
+        ///		If <paramref name="clause"/> is null then nothing will be added.
+        /// </summary>
+        [MethodImpl (MethodImplOptions.AggressiveInlining)]
+        public static SqlClause AddNotExists (this SqlClause sqlClause, [CanBeNull] SqlClause clause)
+        {
+            if (clause == null)
+                return sqlClause;
+
+            sqlClause.Add ("not exists (");
+            sqlClause.Add (clause);
+            sqlClause.Add (")");
+
+            return sqlClause;
+        }
     }
 }

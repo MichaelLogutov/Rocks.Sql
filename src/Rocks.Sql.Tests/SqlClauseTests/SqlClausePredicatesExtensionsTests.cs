@@ -869,6 +869,90 @@ namespace Rocks.Sql.Tests.SqlClauseTests
             sql.Should ().Be (string.Empty);
             parameters.Should ().BeEmpty ();
         }
+
+
+        [Fact]
+        public void AddExists_ByDefault_AddsCorrectPredicate ()
+        {
+            // arrange
+            var sut = new SqlClause ();
+            var parameter = new SqlParameter { ParameterName = "@x" };
+
+            var clause = new SqlClause ("select * from Table2");
+            clause.Add (parameter);
+
+
+            // act
+            sut.AddExists (clause);
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().Be ("exists (select * from Table2)");
+            parameters.Should ().Equal (parameter);
+        }
+
+
+        [Fact]
+        public void AddExists_Null_AddsNothing ()
+        {
+            // arrange
+            var sut = new SqlClause ();
+
+
+            // act
+            sut.AddExists (null);
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().Be (string.Empty);
+            parameters.Should ().BeEmpty ();
+        }
+
+
+        [Fact]
+        public void AddNotExists_ByDefault_AddsCorrectPredicate ()
+        {
+            // arrange
+            var sut = new SqlClause ();
+            var parameter = new SqlParameter { ParameterName = "@x" };
+
+            var clause = new SqlClause ("select * from Table2");
+            clause.Add (parameter);
+
+
+            // act
+            sut.AddNotExists (clause);
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().Be ("not exists (select * from Table2)");
+            parameters.Should ().Equal (parameter);
+        }
+
+
+        [Fact]
+        public void AddNotExists_Null_AddsNothing ()
+        {
+            // arrange
+            var sut = new SqlClause ();
+
+
+            // act
+            sut.AddNotExists (null);
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().Be (string.Empty);
+            parameters.Should ().BeEmpty ();
+        }
     }
 }
 
