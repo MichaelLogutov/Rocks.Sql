@@ -12,5 +12,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture ("")]
 [assembly: ComVisible (false)]
 [assembly: Guid ("f4f03926-b1c2-4047-80e6-b232e1135f38")]
-[assembly: AssemblyVersion ("1.2.3.0")]
+[assembly: AssemblyVersion ("1.2.3.1")]
 [assembly: InternalsVisibleTo ("Rocks.Sql.Tests")]

@@ -275,7 +275,7 @@ namespace Rocks.Sql
         /// </returns>
         public override string ToString ()
         {
-            return this.Build ().GetSql ();
+            return this.Build ().ToString ();
         }
 
         #endregion
