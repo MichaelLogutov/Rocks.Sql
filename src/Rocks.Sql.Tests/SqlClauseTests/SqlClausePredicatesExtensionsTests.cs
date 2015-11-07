@@ -895,6 +895,29 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
         [Fact]
+        public void AddExists_WhereClause_AddsCorrectPredicate ()
+        {
+            // arrange
+            var sut = SqlClauseBuilder.Where ();
+            var parameter = new SqlParameter { ParameterName = "@x" };
+
+            var clause = new SqlClause ("select * from Table2");
+            clause.Add (parameter);
+
+
+            // act
+            sut.AddExists (clause);
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().BeEquivalentToSql ("where (exists (select * from Table2))");
+            parameters.Should ().Equal (parameter);
+        }
+
+
+        [Fact]
         public void AddExists_Null_AddsNothing ()
         {
             // arrange
@@ -932,6 +955,29 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
             // assert
             sql.Should ().Be ("not exists (select * from Table2)");
+            parameters.Should ().Equal (parameter);
+        }
+
+
+        [Fact]
+        public void AddNotExists_WhereClause_AddsCorrectPredicate ()
+        {
+            // arrange
+            var sut = SqlClauseBuilder.Where ();
+            var parameter = new SqlParameter { ParameterName = "@x" };
+
+            var clause = new SqlClause ("select * from Table2");
+            clause.Add (parameter);
+
+
+            // act
+            sut.AddNotExists (clause);
+            var sql = sut.GetSql ();
+            var parameters = sut.GetParameters ();
+
+
+            // assert
+            sql.Should ().BeEquivalentToSql ("where (not exists (select * from Table2))");
             parameters.Should ().Equal (parameter);
         }
 

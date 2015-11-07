@@ -449,9 +449,7 @@ namespace Rocks.Sql
             if (clause == null)
                 return sqlClause;
 
-            sqlClause.Add ("exists (");
-            sqlClause.Add (clause);
-            sqlClause.Add (")");
+            sqlClause.Add (new SqlClause ("exists (").Add (clause).Add (")"));
 
             return sqlClause;
         }
@@ -467,9 +465,7 @@ namespace Rocks.Sql
             if (clause == null)
                 return sqlClause;
 
-            sqlClause.Add ("not exists (");
-            sqlClause.Add (clause);
-            sqlClause.Add (")");
+            sqlClause.Add (new SqlClause ("not exists (").Add (clause).Add (")"));
 
             return sqlClause;
         }

@@ -261,6 +261,7 @@ namespace Rocks.Sql
         }
 
 
+
         /// <summary>
         ///     Returns a string that represents the current object.
         /// </summary>
