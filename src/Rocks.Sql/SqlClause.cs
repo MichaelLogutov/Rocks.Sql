@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 
@@ -12,7 +13,7 @@ namespace Rocks.Sql
     /// </summary>
     public class SqlClause
     {
-        #region Private fields
+        #region Private readonly fields
 
         private readonly OrderedHybridCollection<string, string> expressions;
         private readonly Dictionary<string, IDbDataParameter> parameters;
@@ -73,8 +74,8 @@ namespace Rocks.Sql
 
 
         /// <summary>
-        ///     Forces rending of the clause <see cref="Suffix"/> and <see cref="Prefix"/> to string
-        ///		even if it contains no expressions.
+        ///     Forces rending of the clause <see cref="Suffix" /> and <see cref="Prefix" /> to string
+        ///     even if it contains no expressions.
         ///     Default value is false (skip rendering if no expressions addedd).
         /// </summary>
         public bool RenderIfEmpty { get; set; }
@@ -132,8 +133,8 @@ namespace Rocks.Sql
 
 
         /// <summary>
-        ///     Adds the specified <paramref name="sql"/> to the list of sql expressions.
-        ///		If <paramref name="sql"/> is null or empty - nothing will be added.
+        ///     Adds the specified <paramref name="sql" /> to the list of sql expressions.
+        ///     If <paramref name="sql" /> is null or empty - nothing will be added.
         /// </summary>
         /// <returns>Current instance (for chain calls).</returns>
         [NotNull]
@@ -148,7 +149,7 @@ namespace Rocks.Sql
 
         /// <summary>
         ///     <para>
-        ///         Adds the specified <paramref name="sql"/> to the list of sql expressions.
+        ///         Adds the specified <paramref name="sql" /> to the list of sql expressions.
         ///         If <paramref name="sql" /> is null or empty - nothing will be added.
         ///     </para>
         ///     <para>
@@ -170,7 +171,7 @@ namespace Rocks.Sql
 
         /// <summary>
         ///     <para>
-        ///         Adds the specified <paramref name="sql"/> and <paramref name="parameter"/> to the list of sql expressions.
+        ///         Adds the specified <paramref name="sql" /> and <paramref name="parameter" /> to the list of sql expressions.
         ///         If <paramref name="sql" /> is null or empty - nothing will be added.
         ///     </para>
         ///     <para>
@@ -261,7 +262,6 @@ namespace Rocks.Sql
         }
 
 
-
         /// <summary>
         ///     Returns a string that represents the current object.
         /// </summary>
@@ -270,7 +270,59 @@ namespace Rocks.Sql
         /// </returns>
         public override string ToString ()
         {
-            return this.GetSql ();
+            var sql = this.GetSql ();
+
+            foreach (var parameter in this.GetParameters ())
+                sql = sql.Replace (parameter.ParameterName, this.GetParameterStringValue (parameter));
+
+            return sql;
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private string GetParameterStringValue (IDbDataParameter parameter)
+        {
+            if (parameter.Value == null || parameter.Value == DBNull.Value)
+                return "null";
+
+            var type = parameter.Value.GetType ();
+
+            if (type == typeof (DateTime))
+            {
+                var date_time = (DateTime) parameter.Value;
+
+                switch (parameter.DbType)
+                {
+                    case DbType.Date:
+                        return "'" + date_time.ToString ("yyyy-MM-dd") + "'";
+
+                    case DbType.Time:
+                        return "'" + date_time.ToString ("HH:mm:ss") + "'";
+
+                    default:
+                        return "'" + date_time.ToString ("yyyy-MM-dd HH:mm:ss") + "'";
+                }
+            }
+
+            if (type == typeof (bool))
+                return (bool) parameter.Value ? "1" : "0";
+
+            if (type == typeof (byte) ||
+                type == typeof (sbyte) ||
+                type == typeof (short) ||
+                type == typeof (ushort) ||
+                type == typeof (int) ||
+                type == typeof (uint) ||
+                type == typeof (long) ||
+                type == typeof (ulong) ||
+                type == typeof (float) ||
+                type == typeof (double) ||
+                type == typeof (decimal))
+                return Convert.ToString (parameter.Value, CultureInfo.InvariantCulture);
+
+            return "'" + Convert.ToString (parameter.Value, CultureInfo.InvariantCulture).Replace ("'", "''") + "'";
         }
 
         #endregion
