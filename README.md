@@ -1,4 +1,6 @@
-# Rocks.Sql
+Rocks.Sql
+=========
+
 This is a sql generation helper tool. Meaning if you need to build some complex SQL - it can help you by lifting up cumbersome management of string conctatination for correct "where" clauses, prevent dublicate joins and so on.
 
 Example. Lets say you have this filter model:
