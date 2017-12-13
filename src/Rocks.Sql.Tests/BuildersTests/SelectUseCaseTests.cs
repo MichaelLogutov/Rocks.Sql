@@ -3,7 +3,6 @@ using System.Data;
 using System.Data.SqlClient;
 using FluentAssertions;
 using Xunit;
-using NCrunch.Framework;
 
 namespace Rocks.Sql.Tests.BuildersTests
 {
@@ -55,7 +54,7 @@ namespace Rocks.Sql.Tests.BuildersTests
 		}
 
 
-		[Fact, Serial]
+		[Fact]
 		public void Select_IsPerformant ()
 		{
 			// arrange
