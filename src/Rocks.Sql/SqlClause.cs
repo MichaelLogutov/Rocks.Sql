@@ -13,14 +13,9 @@ namespace Rocks.Sql
     /// </summary>
     public class SqlClause
     {
-        #region Private readonly fields
-
         private readonly OrderedHybridCollection<string, string> expressions;
         private readonly Dictionary<string, IDbDataParameter> parameters;
 
-        #endregion
-
-        #region Construct
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SqlClause" /> class.
@@ -34,9 +29,6 @@ namespace Rocks.Sql
                 this.Add (initialExpression);
         }
 
-        #endregion
-
-        #region Public properties
 
         /// <summary>
         ///     Prefix string that will be added before the clause content.
@@ -89,9 +81,6 @@ namespace Rocks.Sql
             get { return this.expressions.Count == 0; }
         }
 
-        #endregion
-
-        #region Public methods
 
         /// <summary>
         ///     Returns true if there is an expression with the specified key.
@@ -278,9 +267,6 @@ namespace Rocks.Sql
             return sql;
         }
 
-        #endregion
-
-        #region Private methods
 
         private string GetParameterStringValue (IDbDataParameter parameter)
         {
@@ -324,7 +310,5 @@ namespace Rocks.Sql
 
             return "'" + Convert.ToString (parameter.Value, CultureInfo.InvariantCulture).Replace ("'", "''") + "'";
         }
-
-        #endregion
     }
 }

@@ -6,13 +6,8 @@ namespace Rocks.Sql.Tests
 {
 	public static class TestHelpers
 	{
-		#region Private fields
-
 		private static readonly Regex NormalizeSpacesRegex = new Regex (@"[\s\n\r]+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-		#endregion
-
-		#region Static methods
 
 		public static AndConstraint<StringAssertions> BeEquivalentToSql (this StringAssertions assertions,
 		                                                                 string expectedSqlEquivalent,
@@ -25,9 +20,6 @@ namespace Rocks.Sql.Tests
 			return subject.Should ().Be (expected, reason, reasonArgs);
 		}
 
-		#endregion
-
-		#region Private methods
 
 		private static string NormalizeSql (string subject)
 		{
@@ -39,7 +31,5 @@ namespace Rocks.Sql.Tests
 
 			return subject;
 		}
-
-		#endregion
 	}
 }

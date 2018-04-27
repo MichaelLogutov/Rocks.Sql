@@ -37,7 +37,7 @@ namespace Rocks.Sql.Tests.SqlClauseTests
 
 
 			// arrange
-			action.ShouldThrow<ArgumentNullException> ()
+			action.Should().Throw<ArgumentNullException> ()
 			      .And.ParamName.Should ().Be ("parameter.ParameterName");
 		}
 

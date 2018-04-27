@@ -9,17 +9,11 @@ namespace Rocks.Sql
     /// </summary>
     public class SqlSelectStatementBuilder
     {
-        #region Private readonly fields
-
         [NotNull]
         private readonly SqlClause select;
 
         [NotNull]
         private readonly SqlClause from;
-
-        #endregion
-
-        #region Private fields
 
         [CanBeNull]
         private SqlClause prefix;
@@ -39,9 +33,6 @@ namespace Rocks.Sql
         [CanBeNull]
         private SqlClause suffix;
 
-        #endregion
-
-        #region Construct
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SqlSelectStatementBuilder" /> class.
@@ -52,9 +43,6 @@ namespace Rocks.Sql
             this.from = SqlClauseBuilder.From (tableName);
         }
 
-        #endregion
-
-        #region Public properties
 
         /// <summary>
         ///     A starting sql clause. This sql will be prepended to the result.
@@ -172,9 +160,6 @@ namespace Rocks.Sql
             }
         }
 
-        #endregion
-
-        #region Public methods
 
         /// <summary>
         ///     Adds new column to select statement.
@@ -277,7 +262,5 @@ namespace Rocks.Sql
         {
             return this.Build ().ToString ();
         }
-
-        #endregion
     }
 }

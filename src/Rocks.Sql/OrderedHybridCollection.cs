@@ -12,14 +12,9 @@ namespace Rocks.Sql
 	/// <typeparam name="TValue">Item value type.</typeparam>
 	public class OrderedHybridCollection<TKey, TValue> : IEnumerable<TValue>
 	{
-		#region Private fields
-
 		private readonly IList<TValue> values;
 		private readonly IDictionary<TKey, int> indexes;
 
-		#endregion
-
-		#region Construct
 
 		/// <summary>
 		///     Initializes a new instance of the <see cref="OrderedHybridCollection&lt;TKey, TValue&gt;" /> class.
@@ -30,9 +25,6 @@ namespace Rocks.Sql
 			this.indexes = new Dictionary<TKey, int> (comparer);
 		}
 
-		#endregion
-
-		#region Public properties
 
 		/// <summary>
 		///     (GET) Number of items in the collection.
@@ -65,9 +57,6 @@ namespace Rocks.Sql
 		/// <param name="index">Item index.</param>
 		public virtual TValue this [int index] { get { return this.values[index]; } }
 
-		#endregion
-
-		#region Public methods
 
 		/// <summary>
 		///     Adds new keyed item to the collection.
@@ -129,9 +118,6 @@ namespace Rocks.Sql
 			return index;
 		}
 
-		#endregion
-
-		#region IEnumerable<TValue> Members
 
 		/// <summary>
 		///     Returns an enumerator that iterates through the collection.
@@ -155,7 +141,5 @@ namespace Rocks.Sql
 		{
 			return this.GetEnumerator ();
 		}
-
-		#endregion
 	}
 }
