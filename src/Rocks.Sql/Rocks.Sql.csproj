@@ -24,9 +24,6 @@
     <PackageLicenseUrl>https://github.com/MichaelLogutov/Rocks.Sql/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/MichaelLogutov/Rocks.Sql</RepositoryUrl>
     <PackageReleaseNotes>2.3.0 (2018-04-27)
-Update packages
-
-2.2.0 (2018-04-27)
 Update packages</PackageReleaseNotes>
   </PropertyGroup>
   <!-- NuGet packages -->
