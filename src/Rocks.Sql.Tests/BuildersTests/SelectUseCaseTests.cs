@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using FluentAssertions;
 using Xunit;
 
@@ -28,26 +29,23 @@ namespace Rocks.Sql.Tests.BuildersTests
                                            "where (u.Name = @userName) and (u.Email = @userEmail) " +
                                            "order by o.Date");
 
-            parameters.Should().BeEquivalentTo(new[]
+            parameters.Should().BeEquivalentTo(new
                                                {
-                                                   new SqlParameter
-                                                   {
-                                                       ParameterName = "@top",
-                                                       SqlDbType = SqlDbType.Int,
-                                                       Value = filter.MaxRecords
-                                                   },
-                                                   new SqlParameter
-                                                   {
-                                                       ParameterName = "@userName",
-                                                       SqlDbType = SqlDbType.VarChar,
-                                                       Value = filter.UserName
-                                                   },
-                                                   new SqlParameter
-                                                   {
-                                                       ParameterName = "@userEmail",
-                                                       SqlDbType = SqlDbType.VarChar,
-                                                       Value = filter.UserEmail
-                                                   }
+                                                   ParameterName = "@top",
+                                                   SqlDbType = SqlDbType.Int,
+                                                   Value = filter.MaxRecords
+                                               },
+                                               new
+                                               {
+                                                   ParameterName = "@userName",
+                                                   SqlDbType = SqlDbType.VarChar,
+                                                   Value = filter.UserName
+                                               },
+                                               new
+                                               {
+                                                   ParameterName = "@userEmail",
+                                                   SqlDbType = SqlDbType.VarChar,
+                                                   Value = filter.UserEmail
                                                });
         }
 

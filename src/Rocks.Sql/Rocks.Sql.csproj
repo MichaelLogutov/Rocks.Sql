@@ -3,8 +3,8 @@
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes);**\*.v2.ncrunchproject;**\*.v3.ncrunchproject;**\*.nupkg
         </DefaultItemExcludes>
-    <TargetFrameworks>net461;net471;netstandard2.0</TargetFrameworks>
-    <Version>2.3.0</Version>
+    <TargetFrameworks>net471;netstandard2.0</TargetFrameworks>
+    <Version>2.4.0</Version>
     <FileVersion>$(Version)</FileVersion>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <Authors>Michael Logutov</Authors>
@@ -23,12 +23,21 @@
     <PackageProjectUrl>https://github.com/MichaelLogutov/Rocks.Sql</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/MichaelLogutov/Rocks.Sql/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/MichaelLogutov/Rocks.Sql</RepositoryUrl>
-    <PackageReleaseNotes>2.3.0 (2018-04-27)
+    <PackageReleaseNotes>2.4.0 (2018-05-10)
+Removed .NET 4.6.1
+
+2.3.0 (2018-04-27)
 Update packages</PackageReleaseNotes>
   </PropertyGroup>
   <!-- NuGet packages -->
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
+  </ItemGroup>
+  <!-- NuGet packages for .NET Framework -->
+  <ItemGroup Condition="$(TargetFramework) == 'net471'">
+  </ItemGroup>
+  <!-- NuGet packages for .NET Core -->
+  <ItemGroup Condition="$(TargetFramework) == 'netstandard2.0'">
   </ItemGroup>
   <!-- Documentation -->
   <Target Name="IncludeDocumentationFiles" BeforeTargets="PrepareForPublish">
